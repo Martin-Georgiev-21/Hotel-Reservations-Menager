@@ -1,14 +1,19 @@
 ﻿@model IEnumerable<Hotel_Reservation_Menager.Models.Rooms>
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+
 
 @{
     ViewData["Title"] = "Rooms";
 }
 
 <h1>Rooms</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) == "1")
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 
 <table class="table">
     <thead>
@@ -31,10 +36,13 @@
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewBag.NumberSortParam">@Html.DisplayNameFor(model => model.Number)</a>
             </th>
-            <th></th>
+            @if (User.Identity.Name == "Admin")
+            {
+                <th></th>
+            }
         </tr>
     </thead>
-   
+
     <tbody>
         @foreach (var item in Model)
         {
@@ -57,11 +65,21 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Number)
                 </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                @if (User.Identity.IsAuthenticated && User.FindFirstValue(ClaimTypes.NameIdentifier) == "1")
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    </td>
+                }
             </tr>
         }
     </tbody>

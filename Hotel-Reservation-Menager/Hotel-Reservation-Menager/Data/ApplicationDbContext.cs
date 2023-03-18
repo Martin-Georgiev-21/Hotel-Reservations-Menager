@@ -18,33 +18,9 @@ namespace Hotel_Reservation_Menager.Data
         public DbSet<Users> Users { get; set; }
         public DbSet<Reservations> Reservations { get; set; }
         public DbSet<Clients> Clients { get; set; }
-        public DbSet<ReservationClient> ReservationClients { get; set; }
+        public DbSet<ReservationClient> ReservationClient { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<ReservationClient>()
-                .HasKey(rc => new { rc.ReservationId, rc.ClientId });
 
-            modelBuilder.Entity<ReservationClient>()
-                .HasOne(rc => rc.Reservation)
-                .WithMany(r => r.ListOfClients)
-                .HasForeignKey(rc => rc.ReservationId);
-
-            modelBuilder.Entity<ReservationClient>()
-                .HasOne(rc => rc.Client)
-                .WithMany(c => c.ListOfClients)
-                .HasForeignKey(rc => rc.ClientId);
-
-            modelBuilder.Entity<Reservations>()
-                .HasMany(r => r.ListOfClients)
-                .WithOne(rc => rc.Reservation)
-                .HasForeignKey(rc => rc.ReservationId);
-
-            modelBuilder.Entity<Clients>()
-                .HasMany(c => c.ListOfClients)
-                .WithOne(rc => rc.Client)
-                .HasForeignKey(rc => rc.ClientId);
-        }
     }
 
 }

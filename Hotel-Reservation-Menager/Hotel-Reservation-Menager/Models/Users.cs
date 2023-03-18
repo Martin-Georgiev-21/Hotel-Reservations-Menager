@@ -68,45 +68,14 @@ namespace Hotel_Reservation_Menager.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [DateGreaterThan("HireDate", ErrorMessage = "Termination date must be greater than hire date.")]
         [DisplayName("Termination Date")]
         public DateTime? TerminationDate { get; set; }
 
 
 
-        public class DateGreaterThanAttribute : ValidationAttribute
-            {
-                private readonly string _comparisonProperty;
-
-                public DateGreaterThanAttribute(string comparisonProperty)
-                {
-                    _comparisonProperty = comparisonProperty;
-                }
-
-                protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-                {
-                    var propertyInfo = validationContext.ObjectType.GetProperty(_comparisonProperty);
-                    if (propertyInfo == null)
-                    {
-                        return new ValidationResult($"Property {_comparisonProperty} not found.");
-                    }
-
-                    var comparisonValue = propertyInfo.GetValue(validationContext.ObjectInstance) as DateTime?;
-
-                    if (value == null || comparisonValue == null)
-                    {
-                        return ValidationResult.Success;
-                    }
-
-                    if (comparisonValue >= (DateTime)value)
-                    {
-                        return new ValidationResult(ErrorMessage);
-                    }
-
-                    return ValidationResult.Success;
-                }
+       
             }
         }
 
-    }
+    
 

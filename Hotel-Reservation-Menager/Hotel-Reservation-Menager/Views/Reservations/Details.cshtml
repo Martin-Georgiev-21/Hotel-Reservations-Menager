@@ -6,27 +6,28 @@
 
 <h1>Details</h1>
 
+
 <div>
-    <h4>Reservations</h4>
+    <h4>Reservation Details</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.RoomId)
         </dt>
-        <dd>
-            @Html.DisplayFor(model => model.RoomId)
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.UserId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.UserId)
+            @Html.DisplayFor(model => model.UserId) 
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.ListOfClients)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ListOfClients)
+            @foreach (var client in Model.ListOfClients)
+            {
+                <div>@client.Client.FirstName @client.Client.FirstName</div>
+            }
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Accommodation)
@@ -45,34 +46,21 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.IsBreakfast)
-</dd>
-<dt>
-@Html.DisplayNameFor(model => model.IsAllInclusive)
-</dt>
-<dd>
-@Html.DisplayFor(model => model.IsAllInclusive)
-</dd>
-<dt>
-@Html.DisplayNameFor(model => model.Price)
-</dt>
-<dd>
-@Html.DisplayFor(model => model.Price)
-</dd>
-</dl>
-
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAllInclusive)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsAllInclusive)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+    </dl>
 </div>
-
-@foreach (var client in Model.ListOfClients)
-{
-    @Html.DisplayFor(model => client.Client.FirstName)
-    @Html.DisplayFor(model => client.Client.LastName)
-    @Html.DisplayFor(model => client.Client.PhoneNumber)
-   
-}
-else
-{
-    <p>No clients found</p>
-}
 
 <div>
     <a asp-action="Index">Back to List</a>

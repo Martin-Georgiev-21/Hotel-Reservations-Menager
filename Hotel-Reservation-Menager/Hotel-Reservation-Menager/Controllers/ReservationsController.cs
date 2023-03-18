@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hotel_Reservation_Menager.Data;
 using Hotel_Reservation_Menager.Models;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Hotel_Reservation_Menager.Controllers
 {
@@ -41,9 +43,37 @@ namespace Hotel_Reservation_Menager.Controllers
         }
 
         // GET: Reservations/Create
-        public IActionResult Create()
+        public IActionResult Create(int clientId)
         {
-            return View();
+            var client = _context.Clients.FirstOrDefault(c => c.Id == clientId);
+            if (client == null)
+            {
+                return NotFound();
+            }
+
+            int userId;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out userId))
+            {
+                var reservation = new Reservations
+                {
+                    UserId = userId,
+                    RoomId = 1, // Set the default room ID
+                };
+
+                var reservationClient = new ReservationClient
+                {
+                    Reservation = reservation,
+                    Client = client
+                };
+
+                _context.ReservationClient.Add(reservationClient);
+                _context.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return NotFound();
         }
 
         // POST: Reservations/Create
@@ -126,28 +156,35 @@ namespace Hotel_Reservation_Menager.Controllers
             return View(reservation);
         }
 
-        private async Task<bool> AddClientToReservation(int reservationId, int clientId)
+        // POST: Reservations/AddClientToReservation
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddClientToReservation(int reservationId, int clientId)
         {
+            // Find the reservation and client by their IDs
             var reservation = await _context.Reservations.FindAsync(reservationId);
             var client = await _context.Clients.FindAsync(clientId);
 
             if (reservation == null || client == null)
             {
-                return false;
+                
+                return NotFound();
             }
 
+           
             var reservationClient = new ReservationClient
             {
                 Reservation = reservation,
                 Client = client
             };
 
-            _context.ReservationClients.Add(reservationClient);
+          
+            _context.ReservationClient.Add(reservationClient);
             await _context.SaveChangesAsync();
 
-            return true;
+        
+            return Ok();
         }
-
 
         // GET: Reservations/Delete/5
         public async Task<IActionResult> Delete(int? id)

@@ -328,3 +328,11 @@ C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservatio
 C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
 C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\bin\Debug\net5.0\X.PagedList.dll
 C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\bin\Debug\net5.0\X.PagedList.Mvc.dll
+C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Clients\CreateClient.cshtml.g.cs
+C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Clients\DeleteClient.cshtml.g.cs
+C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Clients\EditClient.cshtml.g.cs
+C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Clients\Index.cshtml.g.cs
+C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Users\CreateUser.cshtml.g.cs
+C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Users\DeleteUser.cshtml.g.cs
+C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Users\EditUser.cshtml.g.cs
+C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Users\Index.cshtml.g.cs
