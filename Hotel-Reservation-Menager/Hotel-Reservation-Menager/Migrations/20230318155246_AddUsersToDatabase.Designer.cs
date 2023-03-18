@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hotel_Reservation_Menager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230318124031_AddUsersToDatabase")]
+    [Migration("20230318155246_AddUsersToDatabase")]
     partial class AddUsersToDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,7 +134,8 @@ namespace Hotel_Reservation_Menager.Migrations
 
                     b.Property<string>("Egn")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -168,7 +169,8 @@ namespace Hotel_Reservation_Menager.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime?>("TerminationDate")
                         .HasColumnType("datetime2");

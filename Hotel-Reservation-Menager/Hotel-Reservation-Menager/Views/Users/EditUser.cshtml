@@ -1,0 +1,111 @@
+﻿@model Hotel_Reservation_Menager.Models.Users
+
+<form method="post">
+    <input asp-for="UserId" hidden />
+    <input asp-for="HireDate" hidden />
+    <div class="border p-3">
+        <div class="form-group row">
+            <h2 class="text-info pl-3">Edit User</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="FirstName"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="FirstName" class="form-control" value="@Model.FirstName" />
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="MiddleName"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="MiddleName" class="form-control" value="@Model.MiddleName"/>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="LastName"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="LastName" class="form-control" value="@Model.LastName"/>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Username"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Username" class="form-control" value="@Model.Username"/>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Email"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Email" class="form-control" value="@Model.Email"/>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Password"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Password" class="form-control" value="@Model.Password"/>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Egn"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Egn" class="form-control" value="@Model.Egn"/>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="PhoneNumber"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="PhoneNumber" class="form-control" value="@Model.PhoneNumber"/>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="TerminationDate"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="TerminationDate" class="form-control" value="@Model.TerminationDate"/>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+
+                        <div class="col">
+                            <input type="submit" class="btn btn-info w-100" value="Update" />
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100">Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                @* Keep this empty *@
+            </div>
+        </div>
+    </div>
+
+</form>
