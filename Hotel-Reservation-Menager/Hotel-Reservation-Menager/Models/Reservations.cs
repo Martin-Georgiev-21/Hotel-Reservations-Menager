@@ -14,7 +14,7 @@ namespace Hotel_Reservation_Menager.Models
         [Required]
         public int RoomId { get; set; }
         public int UserId { get; set; }
-        public List<Clients> ListOfClients { get; set; }
+        public List<ReservationClient> ListOfClients { get; set; }
         [Required]
         [DataType(DataType.Date)]
         public string Accommodation { get; set; }

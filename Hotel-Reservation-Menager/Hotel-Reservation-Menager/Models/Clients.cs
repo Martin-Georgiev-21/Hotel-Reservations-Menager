@@ -38,6 +38,7 @@ namespace Hotel_Reservation_Menager.Models
         [Required]
         [DisplayName("Adult")]
         public bool IsAdult { get; set; }
+        public List<ReservationClient> ListOfClients { get; set; }
 
     }
 }
