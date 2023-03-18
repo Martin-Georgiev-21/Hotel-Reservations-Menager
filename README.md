@@ -1,1 +1,1 @@
-# Hotel-Reservations-Menager
+# Hotel-Reservations-Manager
