@@ -40,12 +40,12 @@ namespace Hotel_Reservation_Menager.Models
         public string LastName { get; set; }
 
         [Required]
-        [RegularExpression("^[0-9]{10}$", ErrorMessage = "EGN must be exactly 10 digits.")]
+        [StringLength(10)]
         [DisplayName("EGN")]
         public string Egn { get; set; }
 
         [Required]
-        [RegularExpression("^\\d{10}$", ErrorMessage = "Phone number must be exactly 10 digits.")]
+        [StringLength(10)]
         [DataType(DataType.PhoneNumber)]
         [DisplayName("Phone Number")]
         public string PhoneNumber { get; set; }
