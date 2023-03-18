@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hotel_Reservation_Menager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230318113825_AddRoomsToDatabase")]
-    partial class AddRoomsToDatabase
+    [Migration("20230318123949_AddReservationsToDatabase")]
+    partial class AddReservationsToDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,9 +49,49 @@ namespace Hotel_Reservation_Menager.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<int?>("ReservationsId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("ReservationsId");
+
                     b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("Hotel_Reservation_Menager.Models.Reservations", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Accommodation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Exemption")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAllInclusive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsBreakfast")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("Hotel_Reservation_Menager.Models.Rooms", b =>
@@ -141,6 +181,18 @@ namespace Hotel_Reservation_Menager.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Hotel_Reservation_Menager.Models.Clients", b =>
+                {
+                    b.HasOne("Hotel_Reservation_Menager.Models.Reservations", null)
+                        .WithMany("ListOfClients")
+                        .HasForeignKey("ReservationsId");
+                });
+
+            modelBuilder.Entity("Hotel_Reservation_Menager.Models.Reservations", b =>
+                {
+                    b.Navigation("ListOfClients");
                 });
 #pragma warning restore 612, 618
         }
