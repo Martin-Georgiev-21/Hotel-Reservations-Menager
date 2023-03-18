@@ -53,12 +53,29 @@ namespace Hotel_Reservation_Menager.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Check if the user exists
+                var userExists = await _context.Users.AnyAsync(u => u.UserId == reservation.UserId);
+                if (!userExists)
+                {
+                    ModelState.AddModelError("UserId", "The user does not exist.");
+                    return View(reservation);
+                }
+
+                // Check if the room exists
+                var roomExists = await _context.Rooms.AnyAsync(r => r.Id == reservation.RoomId);
+                if (!roomExists)
+                {
+                    ModelState.AddModelError("RoomId", "The room does not exist.");
+                    return View(reservation);
+                }
+
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(reservation);
         }
+
 
         // GET: Reservations/Edit/5
         public async Task<IActionResult> Edit(int? id)
