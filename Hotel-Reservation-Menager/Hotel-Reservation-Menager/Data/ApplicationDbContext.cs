@@ -14,7 +14,8 @@ namespace Hotel_Reservation_Menager.Data
         }
 
         public DbSet<Clients> Clients { get; set; }
-        public DbSet<Users> Users { get; set; }
+        public DbSet<Reservations> Reservations { get; set; }
         public DbSet<Rooms> Rooms { get; set; }
+        public DbSet<Users> Users { get; set; }
     }
 }
