@@ -1,15 +1,10 @@
+using Hotel_Reservation_Menager.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ToDoList_WebAppDemo.Data;
 
 namespace Hotel_Reservation_Menager
 {
@@ -26,8 +21,8 @@ namespace Hotel_Reservation_Menager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(
-                Configuration.GetConnectionString("Default Connection")));
+      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllersWithViews();
         }
 
@@ -59,5 +54,6 @@ namespace Hotel_Reservation_Menager
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
 }

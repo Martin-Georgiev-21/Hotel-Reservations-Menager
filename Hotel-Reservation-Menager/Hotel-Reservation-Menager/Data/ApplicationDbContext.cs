@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Hotel_Reservation_Menager.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ToDoList_WebAppDemo.Data
+namespace Hotel_Reservation_Menager.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -11,6 +13,7 @@ namespace ToDoList_WebAppDemo.Data
         {
 
         }
-
+        public DbSet<Users> Users { get; set; }
+        public DbSet<Rooms> Rooms { get; set; }
     }
 }
