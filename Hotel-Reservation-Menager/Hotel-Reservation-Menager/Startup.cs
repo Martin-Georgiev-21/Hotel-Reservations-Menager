@@ -1,7 +1,6 @@
 using Hotel_Reservation_Menager.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,5 +58,6 @@ namespace Hotel_Reservation_Menager
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
 }

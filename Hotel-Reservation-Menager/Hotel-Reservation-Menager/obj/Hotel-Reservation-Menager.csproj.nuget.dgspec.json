@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mgeor\\Desktop\\Repository It\\Hotel-Reservations-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager.csproj": {}
+    "C:\\Users\\Jacqueline Georgieva\\Documents\\GitHub\\Hotel-Reservations-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mgeor\\Desktop\\Repository It\\Hotel-Reservations-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager.csproj": {
+    "C:\\Users\\Jacqueline Georgieva\\Documents\\GitHub\\Hotel-Reservations-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mgeor\\Desktop\\Repository It\\Hotel-Reservations-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager.csproj",
+        "projectUniqueName": "C:\\Users\\Jacqueline Georgieva\\Documents\\GitHub\\Hotel-Reservations-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager.csproj",
         "projectName": "Hotel-Reservation-Menager",
-        "projectPath": "C:\\Users\\mgeor\\Desktop\\Repository It\\Hotel-Reservations-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager.csproj",
-        "packagesPath": "C:\\Users\\mgeor\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mgeor\\Desktop\\Repository It\\Hotel-Reservations-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager\\obj\\",
+        "projectPath": "C:\\Users\\Jacqueline Georgieva\\Documents\\GitHub\\Hotel-Reservations-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager.csproj",
+        "packagesPath": "C:\\Users\\Jacqueline Georgieva\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Jacqueline Georgieva\\Documents\\GitHub\\Hotel-Reservations-Menager\\Hotel-Reservation-Menager\\Hotel-Reservation-Menager\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\mgeor\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Jacqueline Georgieva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,6 +44,12 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.CodeAnalysis.Analyzers": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.0, )"
@@ -77,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
