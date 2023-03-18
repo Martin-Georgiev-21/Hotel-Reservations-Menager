@@ -280,3 +280,4 @@ C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-
 C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Hotel-Reservation-Menager.pdb
 C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Hotel-Reservation-Menager.genruntimeconfig.cache
 C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\ref\Hotel-Reservation-Menager.dll
+C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\AfterLogInAdmin.cshtml.g.cs

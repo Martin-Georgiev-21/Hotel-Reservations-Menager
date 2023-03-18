@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Hotel_Reservation_Menager.Data;
+using Hotel_Reservation_Menager.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,12 +11,35 @@ namespace Hotel_Reservation_Menager.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _db;
+
+        public HomeController(ApplicationDbContext db)
+        {
+            _db = db;
+        }
         // GET: HomeController
         public ActionResult Index()
         {
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult LogIn(Users obj)
+        {
+            foreach (var item in _db.Users)
+            {
+                if (item.Username == obj.Username && item.Password == obj.Password)
+                {
+                    if (item.UserId == 1)
+                    {
+                        return View("../AfterLogInAdmin");
+                    }
+                    else return View("../AfterLogInNoAdmin");
+                }
+            }
+            return RedirectToAction("Index");
+        }
         // GET: HomeController/Details/5
         public ActionResult Details(int id)
         {
