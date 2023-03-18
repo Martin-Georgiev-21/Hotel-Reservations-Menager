@@ -2,7 +2,7 @@
 
 namespace Hotel_Reservation_Menager.Migrations
 {
-    public partial class Rooms : Migration
+    public partial class AddUsersToDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
