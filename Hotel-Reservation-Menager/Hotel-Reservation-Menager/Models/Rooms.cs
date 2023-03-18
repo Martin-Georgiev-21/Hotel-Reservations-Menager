@@ -17,25 +17,31 @@ namespace Hotel_Reservation_Menager.Models
         public int Id { get; set; }
 
         [Required]
+        [DisplayName("Capacity")]
         public int Capacity { get; set; }
 
         [Required]
+        [DisplayName("Room Type")]
         [DataType(DataType.Text)]
         public string Type { get; set; }
 
         [Required]
-        
+        [DisplayName("Availability")]
         public bool IsAvailable { get; set; }
 
         [Required]
+        [DisplayName("Price per Adult")]
         [DataType(DataType.Currency)]
         public decimal PricePerAdult { get; set; }
 
         [Required]
+        [DisplayName("Price per Child")]
         [DataType(DataType.Currency)]
         public decimal PricePerChild { get; set; }
 
         [Required]
+        [DisplayName("Room Number")]
         public int Number { get; set; }
+
     }
 }
