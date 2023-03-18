@@ -1,3 +1,4 @@
+using Hotel_Reservation_Menager.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ToDoList_WebAppDemo.Data;
 
 namespace Hotel_Reservation_Menager
 {
@@ -27,7 +27,7 @@ namespace Hotel_Reservation_Menager
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
-                Configuration.GetConnectionString("Default Connection")));
+                Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
         }
 
