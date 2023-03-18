@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 namespace Hotel_Reservation_Menager.Models
 
 {
+
+
     public class Rooms
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]

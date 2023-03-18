@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Hotel_Reservation_Menager.Models.Reservations>
+
+<h1>Reservations</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+    
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ListOfClients)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accommodation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exemption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsBreakfast)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAllInclusive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoomId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ListOfClients)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Accommodation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exemption)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsBreakfast)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsAllInclusive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
