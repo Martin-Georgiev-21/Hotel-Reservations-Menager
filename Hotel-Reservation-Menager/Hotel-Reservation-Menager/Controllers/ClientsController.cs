@@ -16,7 +16,7 @@ namespace Hotel_Reservation_Menager.Controllers
         {
             _db = db;
         }
-        public IActionResult DisplayView()
+        public IActionResult Index()
         {
             IEnumerable<Clients> objList = _db.Clients;
             return View(objList);
@@ -32,7 +32,7 @@ namespace Hotel_Reservation_Menager.Controllers
         {
             _db.Clients.Add(obj);
             _db.SaveChanges();
-            return RedirectToAction("DisplayView");
+            return RedirectToAction("Index");
         }
         public IActionResult EditClient(int? id)
         {
@@ -53,7 +53,7 @@ namespace Hotel_Reservation_Menager.Controllers
         {
             _db.Clients.Update(obj);
             _db.SaveChanges();
-            return RedirectToAction("DisplayView");
+            return RedirectToAction("Index");
         }
         public IActionResult DeleteClient(int? id)
         {
@@ -74,7 +74,7 @@ namespace Hotel_Reservation_Menager.Controllers
         {
             _db.Clients.Remove(obj);
             _db.SaveChanges();
-            return RedirectToAction("DisplayView");
+            return RedirectToAction("Index");
         }
     }
 }
