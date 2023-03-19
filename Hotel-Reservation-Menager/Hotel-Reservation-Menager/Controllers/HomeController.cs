@@ -45,11 +45,15 @@ namespace Hotel_Reservation_Menager.Controllers
             return RedirectToAction("Index");
         }
 
+       
+       
         public IActionResult LogOut()
         {
             HttpContext.Session.Remove("UserId");
-            return RedirectToAction("Users", "Home");
+            ModelState.Clear();
+            return View("Index");
         }
+
 
         // GET: HomeController/Details/5
         public ActionResult Details(int id)
