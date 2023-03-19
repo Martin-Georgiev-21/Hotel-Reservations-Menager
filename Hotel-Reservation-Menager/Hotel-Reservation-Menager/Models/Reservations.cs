@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -15,12 +16,15 @@ namespace Hotel_Reservation_Menager.Models
         public int RoomId { get; set; }
         public int UserId { get; set; }
         public List<ReservationClient> ListOfClients { get; set; }
-        [Required]
+        [DisplayName("Start Date")]
         [DataType(DataType.Date)]
         public string Accommodation { get; set; }
+
         [Required]
+        [DisplayName("End Date")]
         [DataType(DataType.Date)]
         public string Exemption { get; set; }
+
         [Required]
         public bool IsBreakfast { get; set; }
         [Required]

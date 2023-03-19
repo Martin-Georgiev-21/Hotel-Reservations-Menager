@@ -54,7 +54,7 @@ namespace Hotel_Reservation_Manager.Controllers
         // POST: Reservations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RoomId,UserId,Accommodation,Exemption,IsBreakfast,IsAllInclusive,Price")] Reservations reservation)
+        public async Task<IActionResult> Create([Bind("Id,RoomId,UserId,Accommodation,Exemption,IsBreakfast,IsAllInclusive,Price,StartDate,EndDate")] Reservations reservation)
         {
             if (ModelState.IsValid)
             {
@@ -74,12 +74,21 @@ namespace Hotel_Reservation_Manager.Controllers
                     return View(reservation);
                 }
 
+                // Check if the end date is greater than the start date
+                if (reservation.Accommodation.CompareTo(reservation.Exemption) >= 0)
+                {
+                    ModelState.AddModelError("Accommodation", "The end date value must be before the start value.");
+                    return View(reservation);
+                }
+
+
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(reservation);
         }
+
 
 
         // GET: Reservations/Edit/5
