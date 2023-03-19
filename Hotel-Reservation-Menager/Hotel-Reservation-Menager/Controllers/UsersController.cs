@@ -17,10 +17,20 @@ namespace Hotel_Reservation_Menager.Controllers
         {
             _db = db;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, int pageSize = 6)
         {
-            IEnumerable<Users> objList = _db.Users;
-            return View(objList);
+            var data = _db.Users.ToList();
+            var totalCount = data.Count();
+            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+
+            var pageData = data.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.TotalPages = totalPages;
+
+            return View(pageData);
         }
         public IActionResult CreateUser()
         {

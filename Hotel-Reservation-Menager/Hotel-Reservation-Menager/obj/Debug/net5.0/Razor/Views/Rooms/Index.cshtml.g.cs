@@ -13,7 +13,7 @@ namespace Hotel_Reservation_Menager.Pages.Rooms
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #nullable restore
-#line 1 "C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\Views\_ViewImports.cshtml"
+#line 1 "C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\Views\_ViewImports.cshtml"
 using Hotel_Reservation_Menager;
 
 #line default
@@ -28,9 +28,7 @@ using System.Security.Claims;
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"fb014119c4c0904a4ecdcd73ce4244934cd2bc5c", @"/Views/Rooms/Index.cshtml")]
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"9fb0fbe9d63b9662606cc91d4d613af03ca6626f", @"/Views/_ViewImports.cshtml")]
-    #nullable restore
     public class Views_Rooms_Index : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<IEnumerable<Hotel_Reservation_Menager.Models.Rooms>>
-    #nullable disable
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("asp-action", "Details", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_1 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("class", new global::Microsoft.AspNetCore.Html.HtmlString("btn btn-sm btn-info"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -90,7 +88,7 @@ using System.Security.Claims;
 #nullable disable
             WriteLiteral("\r\n    </p>\r\n");
 #nullable restore
-#line 16 "C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\Views\Rooms\Index.cshtml"
+#line 16 "C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\Views\Rooms\Index.cshtml"
 }
 
 #line default
@@ -510,26 +508,16 @@ WriteAttributeValue("", 4943, Url.Action("Index", new { pg = ViewBag.Pager.Curre
 #nullable disable
         }
         #pragma warning restore 1998
-        #nullable restore
         [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
-        public global::Microsoft.AspNetCore.Mvc.ViewFeatures.IModelExpressionProvider ModelExpressionProvider { get; private set; } = default!;
-        #nullable disable
-        #nullable restore
+        public global::Microsoft.AspNetCore.Mvc.ViewFeatures.IModelExpressionProvider ModelExpressionProvider { get; private set; }
         [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
-        public global::Microsoft.AspNetCore.Mvc.IUrlHelper Url { get; private set; } = default!;
-        #nullable disable
-        #nullable restore
+        public global::Microsoft.AspNetCore.Mvc.IUrlHelper Url { get; private set; }
         [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
-        public global::Microsoft.AspNetCore.Mvc.IViewComponentHelper Component { get; private set; } = default!;
-        #nullable disable
-        #nullable restore
+        public global::Microsoft.AspNetCore.Mvc.IViewComponentHelper Component { get; private set; }
         [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
-        public global::Microsoft.AspNetCore.Mvc.Rendering.IJsonHelper Json { get; private set; } = default!;
-        #nullable disable
-        #nullable restore
+        public global::Microsoft.AspNetCore.Mvc.Rendering.IJsonHelper Json { get; private set; }
         [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
-        public global::Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper<IEnumerable<Hotel_Reservation_Menager.Models.Rooms>> Html { get; private set; } = default!;
-        #nullable disable
+        public global::Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper<IEnumerable<Hotel_Reservation_Menager.Models.Rooms>> Html { get; private set; }
     }
 }
 #pragma warning restore 1591
