@@ -41,23 +41,14 @@
                                     @Html.ActionLink("▲", "Index", new { sortOrder = ViewBag.NameSortParam == "name_desc" ? "name" : "name_desc", currentFilter = ViewBag.CurrentFilter })
                                     @Html.ActionLink("▼", "Index", new { sortOrder = ViewBag.NameSortParam, currentFilter = ViewBag.CurrentFilter })
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                                 <th>
+                                    @Html.DisplayNameFor(model => model.FirstName)
                                 </th>
                                 <th>
-                                    @Html.ActionLink("▲", "Index", new { sortOrder = ViewBag.PhoneSortParam == "phone_desc" ? "phone" : "phone_desc", currentFilter = ViewBag.CurrentFilter })
-                                    @Html.ActionLink("▼", "Index", new { sortOrder = ViewBag.PhoneSortParam, currentFilter = ViewBag.CurrentFilter })
+                                    @Html.ActionLink("▲", "Index", new { sortOrder = ViewBag.FirstNameSortParam == "first_name_desc" ? "first_name" : "first_name_desc", currentFilter = ViewBag.CurrentFilter })
+                                    @Html.ActionLink("▼", "Index", new { sortOrder = ViewBag.FirstNameSortParam, currentFilter = ViewBag.CurrentFilter })
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Email)
-                                </th>
-                                <th>
-                                    @Html.ActionLink("▲", "Index", new { sortOrder = ViewBag.EmailSortParam == "email_desc" ? "email" : "email_desc", currentFilter = ViewBag.CurrentFilter })
-                                    @Html.ActionLink("▼", "Index", new { sortOrder = ViewBag.EmailSortParam, currentFilter = ViewBag.CurrentFilter })
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.IsAdult)
-                                </th>
+                                
                             </tr>
                         </table>
                     </div>

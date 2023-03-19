@@ -338,3 +338,5 @@ C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-
 C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Users\Index.cshtml.g.cs
 C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Hotel-Reservation-Menager.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\bin\Debug\net5.0\LazZiya.TagHelpers.dll
+C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Hotel-Reservation-Menager.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\bin\Debug\net5.0\LazZiya.TagHelpers.dll
