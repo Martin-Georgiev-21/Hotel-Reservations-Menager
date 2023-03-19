@@ -25,33 +25,32 @@ namespace Hotel_Reservation_Menager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult LogOut()
-        {
-            TempData.Remove("UserId");
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult LogIn(Users obj)
         {
-
             foreach (var item in _db.Users)
             {
-                TempData.Remove("UserId");
                 if (item.Username == obj.Username && item.Password == obj.Password)
-                    
                 {
-                    TempData["UserId"] = item.UserId;
+                    HttpContext.Session.SetInt32("UserId", item.UserId);
                     if (item.UserId == 1)
                     {
                         return View("../AfterLogInAdmin");
                     }
-                    else return View("../AfterLogInNoAdmin");
+                    else
+                    {
+                        return View("../AfterLogInNoAdmin");
+                    }
                 }
             }
             return RedirectToAction("Index");
         }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Remove("UserId");
+            return RedirectToAction("Users", "Home");
+        }
+
         // GET: HomeController/Details/5
         public ActionResult Details(int id)
         {

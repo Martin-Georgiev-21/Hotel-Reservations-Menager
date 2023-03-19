@@ -1,5 +1,6 @@
 ﻿using Hotel_Reservation_Menager.Data;
 using Hotel_Reservation_Menager.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,10 +25,8 @@ namespace Hotel_Reservation_Menager.Controllers
         public IActionResult Index(string sortOrder, string searchString, int pg = 1)
         {
 
-            int? userIdObj = TempData["UserId"] as int?;
-            int userId = userIdObj ?? 0;
-
-            if (userId != 0)
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId != null)
             {
                 ViewBag.UserId = userId;
             }
