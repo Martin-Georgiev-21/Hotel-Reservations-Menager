@@ -1,62 +1,50 @@
-﻿@model IEnumerable<Hotel_Reservation_Menager.Models.Users>
+﻿@model List<Hotel_Reservation_Menager.Models.Users>
 
 
-<div class="container p-3">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-primary">Users List</h2>
-        </div>
-        <div class="col-6 text-right">
-            <a asp-controller="Users" asp-action="CreateUser" class="btn btn-primary">
-                Create New User
-            </a>
-        </div>
-    </div>
-
-    <br /><br />
-
-    @if (Model.Count() > 0)
-    {
-        <table class="table table-bordered table-striped" style="width: 100%">
-            <thead>
-                <tr>
-                    <th>
-                        ID
-                    </th>
-                    <th>
-                        First Name
-                    </th>
-                    <th>
-                        Middle Name
-                    </th>
-                    <th>
-                        Last Name
-                    </th>
-                    <th>
-                        Username
-                    </th>
-                    <th>
-                        Email
-                    </th>
-                    <th>
-                        EGN
-                    </th>
-                    <th>
-                        Phone Number
-                    </th>
-                    <th>
-                        Hire Date
-                    </th>
-                    <th>
-                        Termination Date
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var obj in Model)
-                {
-                    if (obj.UserId != 1)
-                    {
+<h2>Users Table</h2>
+    <a asp-controller="Users" asp-action="CreateUser">
+        Create New User
+    </a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                First Name
+            </th>
+            <th>
+                Middle Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Username
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                EGN
+            </th>
+            <th>
+                Phone Number
+            </th>
+            <th>
+                Hire Date
+            </th>
+            <th>
+                Termination Date
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Model)
+        {
+            if (obj.UserId != 1)
+            {
                 <tr>
                     <td width="50%">@obj.UserId</td>
                     <td width="50%">@obj.FirstName</td>
@@ -77,24 +65,85 @@
                     }
                     <td class="text-center">
                         <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="EditUser" class="btn btn-primary mx-2">
+                            <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="EditUser">
                                 Edit
-                            </a>
-                            <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="DeleteUser" class="btn btn-danger mx-2">
+                            </a> |
+                            
+                            <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="DeleteUser">
                                 Delete
                             </a>
                         </div>
                     </td>
                 </tr>
+            }
+            else
+            {
+                <tr>
+                    <td width="50%">@obj.UserId</td>
+                    <td width="50%">@obj.FirstName</td>
+                    <td width="50%">@obj.MiddleName</td>
+                    <td width="50%">@obj.LastName</td>
+                    <td width="50%">@obj.Username</td>
+                    <td width="50%">@obj.Email</td>
+                    <td width="50%">@obj.Egn</td>
+                    <td width="50%">@obj.PhoneNumber</td>
+                    <td width="50%">@obj.HireDate</td>
+                    @if (obj.TerminationDate == null)
+                    {
+                        <td width="50%">No Termination Date</td>
                     }
-                }
-            </tbody>
-        </table>
-    }
-    <div class="col-6 text-right">
-        <a asp-controller="Home" asp-action="Index" class="btn btn-danger">
-            Back
-        </a>
-    </div>
+                    else
+                    {
+                        <td width="50%">@obj.TerminationDate</td>
+                    }
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>
+
+<div class="pagination">
+    <ul>
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <div style="display:inline-block">
+                <p @(i == ViewBag.Page ? "class=active" : "")>
+                    <a href="/Users?page=@i&pageSize=@ViewBag.PageSize">@i</a>
+                </p>
+            </div>
+        }
+    </ul>
 </div>
+
+<form asp-controller="Users" asp-action="Index" method="get">
+    <div class="form-group">
+        <label for="pageSize">Page Size:</label>
+        @if (ViewBag.PageSize == 3)
+        {
+            <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
+                <option selected="selected" value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
+                <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
+                <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+            </select>
+        }
+        else if (ViewBag.PageSize == 6)
+        {
+            <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
+                <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
+                <option selected="selected" value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
+                <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+            </select>
+        }
+        else
+        {
+            <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
+                <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
+                <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
+                <option selected="selected" value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+            </select>
+        }
+    </div>
+</form>
+
 
