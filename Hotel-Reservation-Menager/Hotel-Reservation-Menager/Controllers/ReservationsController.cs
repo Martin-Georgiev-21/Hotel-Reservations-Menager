@@ -7,7 +7,7 @@ using Hotel_Reservation_Menager.Models;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace Hotel_Reservation_Menager.Controllers
+namespace Hotel_Reservation_Manager.Controllers
 {
     public class ReservationsController : Controller
     {
@@ -43,38 +43,13 @@ namespace Hotel_Reservation_Menager.Controllers
         }
 
         // GET: Reservations/Create
-        public IActionResult Create(int clientId)
+        public IActionResult Create()
         {
-            var client = _context.Clients.FirstOrDefault(c => c.Id == clientId);
-            if (client == null)
-            {
-                return NotFound();
-            }
-
-            int userId;
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out userId))
-            {
-                var reservation = new Reservations
-                {
-                    UserId = userId,
-                    RoomId = 1, // Set the default room ID
-                };
-
-                var reservationClient = new ReservationClient
-                {
-                    Reservation = reservation,
-                    Client = client
-                };
-
-                _context.ReservationClient.Add(reservationClient);
-                _context.SaveChanges();
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            return NotFound();
+            
+                return View();
+            
         }
+
 
         // POST: Reservations/Create
         [HttpPost]
@@ -122,6 +97,7 @@ namespace Hotel_Reservation_Menager.Controllers
             }
             return View(reservation);
         }
+
 
         // POST: Reservations/Edit/5
         [HttpPost]
