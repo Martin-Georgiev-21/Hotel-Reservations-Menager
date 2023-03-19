@@ -3,7 +3,9 @@ using Hotel_Reservation_Menager.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using X.PagedList;
 
@@ -19,20 +21,26 @@ namespace Hotel_Reservation_Menager.Controllers
         }
 
         // GET: Rooms
-        public IActionResult Index(string sortOrder, string searchString)
+        public IActionResult Index(string sortOrder, string searchString, int pg = 1)
         {
-            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["CapacitySortParam"] = sortOrder == "capacity" ? "capacity_desc" : "capacity";
-            ViewData["CurrentFilter"] = searchString;
+            int userId = (int)TempData["UserId"];
 
-            var rooms = from r in _context.Rooms
-                        select r;
+            ViewBag.UserId = userId;
+            var rooms = _context.Rooms.AsQueryable();
 
+            // Filter the data based on the search string
             if (!string.IsNullOrEmpty(searchString))
             {
                 rooms = rooms.Where(r => r.Type.Contains(searchString));
             }
 
+            const int pageSize = 10;
+            if (pg < 1) pg = 1;
+            int rescCount = rooms.Count();
+            var pager = new Pager(rescCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+
+            // Sort the filtered data based on the sort order
             switch (sortOrder)
             {
                 case "name_desc":
@@ -49,7 +57,15 @@ namespace Hotel_Reservation_Menager.Controllers
                     break;
             }
 
-            return View(rooms.ToList());
+            // Paginate the sorted data
+            var data = rooms.Skip(recSkip).Take(pager.PageSize).ToList();
+            this.ViewBag.Pager = pager;
+
+            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CapacitySortParam"] = sortOrder == "capacity" ? "capacity_desc" : "capacity";
+            ViewData["CurrentFilter"] = searchString;
+
+            return View(data);
         }
 
 

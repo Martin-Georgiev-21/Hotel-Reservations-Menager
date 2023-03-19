@@ -20,17 +20,29 @@ namespace Hotel_Reservation_Menager.Controllers
         // GET: HomeController
         public ActionResult Index()
         {
-            return View();
+            return View("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult LogOut()
+        {
+            TempData.Remove("UserId");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult LogIn(Users obj)
         {
+
             foreach (var item in _db.Users)
             {
+                TempData.Remove("UserId");
                 if (item.Username == obj.Username && item.Password == obj.Password)
+                    
                 {
+                    TempData["UserId"] = item.UserId;
                     if (item.UserId == 1)
                     {
                         return View("../AfterLogInAdmin");

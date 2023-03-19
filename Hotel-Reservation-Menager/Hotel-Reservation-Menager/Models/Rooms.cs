@@ -45,5 +45,10 @@ namespace Hotel_Reservation_Menager.Models
         [DisplayName("Room Number")]
         public int Number { get; set; }
 
+
+
+
     }
-}
+
+    }
+
