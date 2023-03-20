@@ -4,14 +4,16 @@ using Hotel_Reservation_Menager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hotel_Reservation_Menager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230320145003_AddUserReservationtoDatabase")]
+    partial class AddUserReservationtoDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,28 +146,6 @@ namespace Hotel_Reservation_Menager.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("Hotel_Reservation_Menager.Models.UserReservation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReservationId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserReservations");
-                });
-
             modelBuilder.Entity("Hotel_Reservation_Menager.Models.Users", b =>
                 {
                     b.Property<int>("UserId")
@@ -250,25 +230,6 @@ namespace Hotel_Reservation_Menager.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("Reservation");
-                });
-
-            modelBuilder.Entity("Hotel_Reservation_Menager.Models.UserReservation", b =>
-                {
-                    b.HasOne("Hotel_Reservation_Menager.Models.Reservations", "Reservations")
-                        .WithMany()
-                        .HasForeignKey("ReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Hotel_Reservation_Menager.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reservations");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Hotel_Reservation_Menager.Models.Clients", b =>

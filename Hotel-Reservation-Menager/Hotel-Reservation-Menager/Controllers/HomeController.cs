@@ -27,26 +27,31 @@ namespace Hotel_Reservation_Menager.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult LogIn(Users obj)
         {
-            foreach (var item in _db.Users)
+            var activeUser = _db.Users.SingleOrDefault(u => u.Username == obj.Username && u.Password == obj.Password && (u.TerminationDate == null || u.TerminationDate > DateTime.Today));
+
+            if (activeUser != null)
             {
-                if (item.Username == obj.Username && item.Password == obj.Password)
+                HttpContext.Session.SetInt32("UserId", activeUser.UserId);
+
+                if (activeUser.UserId == 1)
                 {
-                    HttpContext.Session.SetInt32("UserId", item.UserId);
-                    if (item.UserId == 1)
-                    {
-                        return View("../AfterLogInAdmin");
-                    }
-                    else
-                    {
-                        return View("../AfterLogInNoAdmin");
-                    }
+                    return View("../AfterLogInAdmin");
+                }
+                else
+                {
+                    return View("../AfterLogInNoAdmin");
                 }
             }
-            return RedirectToAction("Index");
+            else
+            {
+                ViewBag.ErrorMessage = "Invalid username or password, or user is inactive.";
+                return View("Index");
+            }
         }
 
-       
-       
+
+
+
         public IActionResult LogOut()
         {
             HttpContext.Session.Remove("UserId");

@@ -20,6 +20,8 @@ namespace Hotel_Reservation_Menager.Data
         public DbSet<Clients> Clients { get; set; }
         public DbSet<ReservationClient> ReservationClient { get; set; }
 
+        public DbSet<UserReservation> UserReservations { get;set; } 
+
 
     }
 

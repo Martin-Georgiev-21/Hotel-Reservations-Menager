@@ -87,5 +87,7 @@ namespace Hotel_Reservation_Menager.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+
     }
 }

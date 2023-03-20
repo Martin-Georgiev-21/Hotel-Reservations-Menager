@@ -31,6 +31,7 @@ namespace Hotel_Reservation_Menager.Models
         public bool IsAllInclusive { get; set; }
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
+        
 
 
     }

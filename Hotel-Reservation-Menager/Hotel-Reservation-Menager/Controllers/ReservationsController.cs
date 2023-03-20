@@ -6,6 +6,7 @@ using Hotel_Reservation_Menager.Data;
 using Hotel_Reservation_Menager.Models;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace Hotel_Reservation_Manager.Controllers
 {
@@ -54,17 +55,14 @@ namespace Hotel_Reservation_Manager.Controllers
         // POST: Reservations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RoomId,UserId,Accommodation,Exemption,IsBreakfast,IsAllInclusive,Price,StartDate,EndDate")] Reservations reservation)
+        public async Task<IActionResult> Create([Bind("Id,RoomId,Accommodation,Exemption,IsBreakfast,IsAllInclusive,Price,StartDate,EndDate")] Reservations reservation)
         {
             if (ModelState.IsValid)
             {
-                // Check if the user exists
-                var userExists = await _context.Users.AnyAsync(u => u.UserId == reservation.UserId);
-                if (!userExists)
-                {
-                    ModelState.AddModelError("UserId", "The user does not exist.");
-                    return View(reservation);
-                }
+                int? userId = HttpContext.Session.GetInt32("UserId");
+
+                // Set the user ID on the reservation
+                reservation.UserId = (int)userId;
 
                 // Check if the room exists
                 var roomExists = await _context.Rooms.AnyAsync(r => r.Id == reservation.RoomId);
@@ -81,13 +79,25 @@ namespace Hotel_Reservation_Manager.Controllers
                     return View(reservation);
                 }
 
-
+                // Save the reservation
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
+
+                // Create a user reservation record for the logged-in user
+                var userReservation = new UserReservation
+                {
+                    UserId = (int)userId,
+                    ReservationId = reservation.Id
+                };
+                _context.Add(userReservation);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(reservation);
         }
+
 
 
 
