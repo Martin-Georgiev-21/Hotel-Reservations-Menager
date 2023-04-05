@@ -12,19 +12,19 @@
                 ID
             </th>
             <th>
-                First Name
+                @Html.ActionLink("First Name", "Index", new { sortOrder = "FirstName",clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
             </th>
             <th>
-                Middle Name
+                @Html.ActionLink("Middle Name", "Index", new { sortOrder = "MiddleName",clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
             </th>
             <th>
-                Last Name
+                @Html.ActionLink("Last Name", "Index", new { sortOrder = "LastName",clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
             </th>
             <th>
-                Username
+                @Html.ActionLink("Username", "Index", new { sortOrder = "Username", clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
             </th>
             <th>
-                Email
+                @Html.ActionLink("Email", "Index", new { sortOrder = "Email", clicked = ViewBag.Clicked, page=ViewBag.Page, pageSize = ViewBag.PageSize })
             </th>
             <th>
                 EGN
@@ -109,7 +109,7 @@
         {
             <div style="display:inline-block">
                 <p @(i == ViewBag.Page ? "class=active" : "")>
-                    <a href="/Users?page=@i&pageSize=@ViewBag.PageSize">@i</a>
+                    <a href="/Users?sortOrder=@ViewBag.SortOrder&clicked=@ViewBag.CurrentClicked&page=@i&pageSize=@ViewBag.PageSize">@i</a>
                 </p>
             </div>
         }
