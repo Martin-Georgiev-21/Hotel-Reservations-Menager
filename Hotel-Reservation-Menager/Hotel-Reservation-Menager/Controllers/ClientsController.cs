@@ -16,7 +16,7 @@ namespace Hotel_Reservation_Menager.Controllers
         {
             _db = db;
         }
-        public IActionResult Index(string sortOrder, string searchString, int pg = 1)
+        public IActionResult Index(string sortOrder, string searchString, int clicked = 0, int page = 1, int pageSize = 6)
         {
             var clients = _db.Clients.AsQueryable();
 
@@ -30,50 +30,45 @@ namespace Hotel_Reservation_Menager.Controllers
                     c.Email.Contains(searchString));
             }
 
-            if (pg < 1) pg = 1;
-            const int pageSize = 10;
-            int rescCount = clients.Count();
-            var pager = new Pager(rescCount, pg, pageSize);
-            int recSkip = (pg - 1) * pageSize;
+            var totalCount = clients.Count();
+            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+            var currentclicked = clicked;
 
-            // Sort the filtered data based on the sort order
-            switch (sortOrder)
+            switch (sortOrder, clicked)
             {
-                case "name_desc":
-                    clients = clients.OrderByDescending(c => c.LastName);
+                case ("FirstName", 1):
+                    clients = clients.OrderBy(s => s.FirstName);
+                    clicked = 0;
                     break;
-                case "first_name":
-                    clients = clients.OrderBy(c => c.FirstName);
+                case ("FirstName", 0):
+                    clients = clients.OrderByDescending(s => s.FirstName);
+                    clicked = 1;
                     break;
-                case "first_name_desc":
-                    clients = clients.OrderByDescending(c => c.FirstName);
+                case ("LastName", 1):
+                    clients = clients.OrderBy(s => s.LastName);
+                    clicked = 0;
+                    break;
+                case ("LastName", 0):
+                    clients = clients.OrderByDescending(s => s.LastName);
+                    clicked = 1;
                     break;
                 default:
-                    clients = clients.OrderBy(c => c.LastName);
+                    clients = clients.OrderBy(s => s.Id);
                     break;
             }
 
-            // Project the sorted data into a new list of Clients objects
-            var data = clients
-                .Skip(recSkip)
-                .Take(pager.PageSize)
-                .Select(c => new Clients
-                {
-                    Id = c.Id,
-                    FirstName = c.FirstName,
-                    LastName = c.LastName,
-                    PhoneNumber = c.PhoneNumber,
-                    Email = c.Email
-                })
-                .ToList();
+            var pageData = clients.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-            this.ViewBag.Pager = pager;
-
-            ViewData["NameSortParam"] = sortOrder == "name_desc" ? "" : "name_desc";
-            ViewData["FirstNameSortParam"] = sortOrder == "first_name" ? "first_name_desc" : "first_name";
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.Clicked = clicked;
+            ViewBag.CurrentClicked = currentclicked;
+            ViewBag.SortOrder = sortOrder;
             ViewData["CurrentFilter"] = searchString;
 
-            return View(data);
+            return View(pageData);
         }
 
 

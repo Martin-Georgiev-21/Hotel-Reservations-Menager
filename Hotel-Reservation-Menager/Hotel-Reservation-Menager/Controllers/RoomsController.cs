@@ -14,91 +14,69 @@ namespace Hotel_Reservation_Menager.Controllers
 {
     public class RoomsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _db;
 
-        public RoomsController(ApplicationDbContext context)
+        public RoomsController(ApplicationDbContext db)
         {
-            _context = context;
+            _db = db;
         }
 
         // GET: Rooms
-        public IActionResult Index(string sortOrder, string searchString, int pg = 1)
+        public IActionResult Index(string sortOrder, int clicked = 0, int page = 1, int pageSize = 6)
         {
+            var rooms = from s in _db.Rooms
+                        select s;
 
-            int? userId = HttpContext.Session.GetInt32("UserId");
-            if (userId != null)
+            var totalCount = rooms.Count();
+            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+            var currentclicked = clicked;
+
+            switch (sortOrder, clicked)
             {
-                ViewBag.UserId = userId;
+                case ("Capacity", 1):
+                    rooms = rooms.OrderBy(s => s.Capacity);
+                    clicked = 0;
+                    break;
+                case ("Capacity", 0):
+                    rooms = rooms.OrderByDescending(s => s.Capacity);
+                    clicked = 1;
+                    break;
+                case ("Type", 1):
+                    rooms = rooms.OrderBy(s => s.Type);
+                    clicked = 0;
+                    break;
+                case ("Type", 0):
+                    rooms = rooms.OrderByDescending(s => s.Type);
+                    clicked = 1;
+                    break;
+                case ("IsAvailable", 1):
+                    rooms = rooms.OrderBy(s => s.IsAvailable);
+                    clicked = 0;
+                    break;
+                case ("IsAvailable", 0):
+                    rooms = rooms.OrderByDescending(s => s.IsAvailable);
+                    clicked = 1;
+                    break;
+                default:
+                    rooms = rooms.OrderBy(s => s.Id);
+                    break;
             }
 
+            var pageData = rooms.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-            var rooms = _context.Rooms.AsQueryable();
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.Clicked = clicked;
+            ViewBag.CurrentClicked = currentclicked;
+            ViewBag.SortOrder = sortOrder;
 
-                // Filter the data based on the search string
-                if (!string.IsNullOrEmpty(searchString))
-                {
-                    rooms = rooms.Where(r => r.Type.Contains(searchString));
-                }
-
-                const int pageSize = 10;
-                if (pg < 1) pg = 1;
-                int rescCount = rooms.Count();
-                var pager = new Pager(rescCount, pg, pageSize);
-                int recSkip = (pg - 1) * pageSize;
-
-                // Sort the filtered data based on the sort order
-                switch (sortOrder)
-                {
-                    case "name_desc":
-                        rooms = rooms.OrderByDescending(r => r.Type);
-                        break;
-                    case "capacity":
-                        rooms = rooms.OrderBy(r => r.Capacity);
-                        break;
-                    case "capacity_desc":
-                        rooms = rooms.OrderByDescending(r => r.Capacity);
-                        break;
-                    default:
-                        rooms = rooms.OrderBy(r => r.Type);
-                        break;
-                }
-
-                // Paginate the sorted data
-                var data = rooms.Skip(recSkip).Take(pager.PageSize).ToList();
-                this.ViewBag.Pager = pager;
-
-                ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-                ViewData["CapacitySortParam"] = sortOrder == "capacity" ? "capacity_desc" : "capacity";
-                ViewData["CurrentFilter"] = searchString;
-
-
-                return View(data);
-            
-            
-        }
-
-
-
-        // GET: Rooms/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var rooms = await _context.Rooms
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (rooms == null)
-            {
-                return NotFound();
-            }
-
-            return View(rooms);
+            return View(pageData);
         }
 
         // GET: Rooms/Create
-        public IActionResult Create()
+        public IActionResult CreateRoom()
         {
             return View();
         }
@@ -106,98 +84,59 @@ namespace Hotel_Reservation_Menager.Controllers
         // POST: Rooms/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Capacity,Type,IsAvailable,PricePerAdult,PricePerChild,Number")] Rooms rooms)
+        public IActionResult CreateRoom(Rooms obj)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(rooms);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(rooms);
+            obj.IsAvailable = true;
+            _db.Rooms.Add(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Rooms/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult EditRoom(int? id)
         {
-            if (id == null)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-
-            var rooms = await _context.Rooms.FindAsync(id);
-            if (rooms == null)
+            var obj = _db.Rooms.Find(id);
+            if (obj == null)
             {
                 return NotFound();
             }
-            return View(rooms);
+            return View(obj);
         }
 
         // POST: Rooms/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Capacity,Type,IsAvailable,PricePerAdult,PricePerChild,Number")] Rooms rooms)
+        public IActionResult EditRoom(Rooms obj)
         {
-            if (id != rooms.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(rooms);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RoomsExists(rooms.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(rooms);
+            _db.Rooms.Update(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        // GET: Rooms/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult DeleteRoom(int? id)
         {
-            if (id == null)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-
-            var rooms = await _context.Rooms
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (rooms == null)
+            var obj = _db.Rooms.Find(id);
+            if (obj == null)
             {
                 return NotFound();
             }
-
-            return View(rooms);
+            return View(obj);
         }
-
-        // POST: Rooms/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteRoom(Rooms obj)
         {
-            var rooms = await _context.Rooms.FindAsync(id);
-            _context.Rooms.Remove(rooms);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool RoomsExists(int id)
-        {
-            return _context.Rooms.Any(e => e.Id == id);
+            _db.Rooms.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

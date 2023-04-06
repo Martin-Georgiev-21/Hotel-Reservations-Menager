@@ -8,11 +8,11 @@
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2 class="text-primary">Users List</h2>
+            <h2 class="text-primary">Clients List</h2>
         </div>
         <div class="col-6 text-right">
             <a asp-controller="Clients" asp-action="CreateClient" class="btn btn-primary">
-                Add New User
+                Add New Client
             </a>
         </div>
     </div>
@@ -28,32 +28,6 @@
                         <input type="text" class="form-control" name="searchString" value="@ViewData["CurrentFilter"]" />
                     </div>
                 </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Sort by:</label>
-                    <div class="col-sm-8">
-                        <table>
-                            <tr>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.LastName)
-                                </th>
-                                <th>
-                                    @Html.ActionLink("▲", "Index", new { sortOrder = ViewBag.NameSortParam == "name_desc" ? "name" : "name_desc", currentFilter = ViewBag.CurrentFilter })
-                                    @Html.ActionLink("▼", "Index", new { sortOrder = ViewBag.NameSortParam, currentFilter = ViewBag.CurrentFilter })
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.FirstName)
-                                </th>
-                                <th>
-                                    @Html.ActionLink("▲", "Index", new { sortOrder = ViewBag.FirstNameSortParam == "first_name_desc" ? "first_name" : "first_name_desc", currentFilter = ViewBag.CurrentFilter })
-                                    @Html.ActionLink("▼", "Index", new { sortOrder = ViewBag.FirstNameSortParam, currentFilter = ViewBag.CurrentFilter })
-                                </th>
-
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <button type="submit" class="btn btn-primary">Filter</button>
@@ -74,10 +48,10 @@
                         ID
                     </th>
                     <th>
-                        First Name
+                        @Html.ActionLink("First Name", "Index", new { sortOrder = "FirstName", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
                     </th>
                     <th>
-                        Last Name
+                        @Html.ActionLink("Last Name", "Index", new { sortOrder = "LastName", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
                     </th>
                     <th>
                         Phone Number
@@ -121,9 +95,50 @@
         <p>No clients found.</p>
     }
 
-</div>
-<div class="col-6 text-right">
-    <a asp-controller="Home" asp-action="Back" class="btn btn-danger">
-        Back
-    </a>
-</div>
+    <div class="pagination">
+        <ul>
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <div style="display:inline-block">
+                    <p @(i == ViewBag.Page ? "class=active" : "")>
+                        <a href="/Clients?sortOrder=@ViewBag.SortOrder&searchString=@ViewBag.SearchString&clicked=@ViewBag.CurrentClicked&page=@i&pageSize=@ViewBag.PageSize">@i</a>
+                    </p>
+                </div>
+            }
+        </ul>
+    </div>
+
+    <form asp-controller="Clients" asp-action="Index" method="get">
+        <div class="form-group">
+            <label for="pageSize">Page Size:</label>
+            @if (ViewBag.PageSize == 3)
+            {
+                <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
+                    <option selected="selected" value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
+                    <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
+                    <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                </select>
+            }
+            else if (ViewBag.PageSize == 6)
+            {
+                <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
+                    <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
+                    <option selected="selected" value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
+                    <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                </select>
+            }
+            else
+            {
+                <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
+                    <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
+                    <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
+                    <option selected="selected" value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                </select>
+            }
+        </div>
+    </form>
+    <div class="col-6 text-right">
+        <a asp-controller="Home" asp-action="Back" class="btn btn-danger">
+            Back
+        </a>
+    </div>

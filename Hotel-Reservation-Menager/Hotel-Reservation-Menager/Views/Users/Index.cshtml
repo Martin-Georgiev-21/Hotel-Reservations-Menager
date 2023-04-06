@@ -61,17 +61,20 @@
                     {
                         <td width="50%">@obj.TerminationDate</td>
                     }
-                    <td class="text-center">
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="EditUser">
-                                Edit
-                            </a> |
+                    @if (obj.UserId != Logged.LoggedId)
+                    {
+                        <td class="text-center">
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="EditUser">
+                                    Edit
+                                </a> |
                             
-                            <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="DeleteUser">
-                                Delete
-                            </a>
-                        </div>
-                    </td>
+                                <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="DeleteUser">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    }
                 </tr>
         }
     </tbody>

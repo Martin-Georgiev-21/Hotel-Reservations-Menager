@@ -1,55 +1,62 @@
-﻿@model Hotel_Reservation_Menager.Models.Clients
+﻿@model Hotel_Reservation_Menager.Models.Rooms
 
-<form method="post" asp-action="CreateClient">
+<form method="post">
+    <input asp-for="Id" hidden />
     <div class="border p-3">
-
         <div class="form-group row">
-            <h2 class="text-info pl-3">Add Client</h2>
+            <h2 class="text-info pl-3">Edit Room</h2>
         </div>
         <div class="row">
             <div class="col-8">
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="FirstName"></label>
+                        <label asp-for="Number"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="FirstName" class="form-control" />
+                        <input asp-for="Number" class="form-control" value="@Model.Number" />
                     </div>
 
                 </div>
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="LastName"></label>
+                        <label asp-for="Capacity"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="LastName" class="form-control" />
+                        <input asp-for="Capacity" class="form-control" value="@Model.Capacity" />
                     </div>
 
                 </div>
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="PhoneNumber"></label>
+                        <label asp-for="Type"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="PhoneNumber" class="form-control" />
+                        <select asp-for="Type" class="form-control">
+                            <option value="@Model.Type"></option>
+                            <option value="SingleRoom">Single Room</option>
+                            <option value="DoubleRoom">Double Room</option>
+                            <option value="Suite">Suite</option>
+                            <option value="Penthouse">Penthouse</option>
+                            <option value="Villa">Villa</option>
+                        </select>
                     </div>
 
                 </div>
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="Email"></label>
+                        <label asp-for="PricePerAdult"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Email" class="form-control" />
+                        <input asp-for="PricePerAdult" class="form-control" value="@Model.PricePerAdult" />
                     </div>
 
                 </div>
                 <div class="form-group row">
                     <div class="col-4">
-                        <label asp-for="IsAdult"></label>
+                        <label asp-for="PricePerChild"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="IsAdult" class="form-control" />
+                        <input asp-for="PricePerChild" class="form-control" value="@Model.PricePerChild" />
                     </div>
 
                 </div>
@@ -57,7 +64,7 @@
                     <div class="col-8 offset-4 row">
 
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Create" />
+                            <input type="submit" class="btn btn-info w-100" value="Update" />
                         </div>
                         <div class="col">
                             <a asp-action="Index" class="btn btn-success w-100">Back</a>
@@ -66,9 +73,9 @@
                 </div>
             </div>
             <div class="col-4">
+                @* Keep this empty *@
             </div>
         </div>
     </div>
 
 </form>
-

@@ -7,6 +7,7 @@ using Hotel_Reservation_Menager.Models;
 using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Hotel_Reservation_Menager;
 
 namespace Hotel_Reservation_Manager.Controllers
 {
@@ -35,7 +36,7 @@ namespace Hotel_Reservation_Manager.Controllers
         public IActionResult CreateReservation(Reservations obj)
         {
             //var obj = _db.ToDoLists.Find(id);
-            
+            obj.UserId = Logged.LoggedId;
             _db.Reservations.Add(obj);
             _db.SaveChanges();
             return RedirectToAction("Index");
