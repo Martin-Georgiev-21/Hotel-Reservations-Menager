@@ -43,8 +43,6 @@
     <tbody>
         @foreach (var obj in Model)
         {
-            if (obj.UserId != 1)
-            {
                 <tr>
                     <td width="50%">@obj.UserId</td>
                     <td width="50%">@obj.FirstName</td>
@@ -75,30 +73,6 @@
                         </div>
                     </td>
                 </tr>
-            }
-            else
-            {
-                <tr>
-                    <td width="50%">@obj.UserId</td>
-                    <td width="50%">@obj.FirstName</td>
-                    <td width="50%">@obj.MiddleName</td>
-                    <td width="50%">@obj.LastName</td>
-                    <td width="50%">@obj.Username</td>
-                    <td width="50%">@obj.Email</td>
-                    <td width="50%">@obj.Egn</td>
-                    <td width="50%">@obj.PhoneNumber</td>
-                    <td width="50%">@obj.HireDate</td>
-                    @if (obj.TerminationDate == null)
-                    {
-                        <td width="50%">No Termination Date</td>
-                    }
-                    else
-                    {
-                        <td width="50%">@obj.TerminationDate</td>
-                    }
-                </tr>
-            }
-
         }
     </tbody>
 </table>
@@ -145,5 +119,9 @@
         }
     </div>
 </form>
-
+<div class="col-6 text-right">
+    <a asp-controller="Home" asp-action="Back" class="btn btn-danger">
+        Back
+    </a>
+</div>
 

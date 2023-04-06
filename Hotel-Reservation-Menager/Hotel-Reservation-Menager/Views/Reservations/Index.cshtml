@@ -11,66 +11,62 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.RoomId)
+                Room Number
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
+                User
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ListOfClients)
+                Clients
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Accommodation)
+                Accommodation
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Exemption)
+                Exemption
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsBreakfast)
+                Breakfast
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsAllInclusive)
+                AllInclusive
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Price
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var obj in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RoomId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ListOfClients)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Accommodation)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Exemption)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsBreakfast)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsAllInclusive)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <td width="50%">@obj.RoomId</td>
+                <td width="50%">@obj.UserId</td>
+                <td width="50%">@foreach (var client in obj.ListOfClients)
+                {<p>@client.FirstName</p>}</td>
+                <td width="50%">@obj.Accommodation</td>
+                <td width="50%">@obj.Exemption</td>
+                <td width="50%">@obj.IsBreakfast</td>
+                <td width="50%">@obj.IsAllInclusive</td>
+                <td width="50%">@obj.Price</td>
+                <td class="text-center">
+                    <div class="w-75 btn-group" role="group">
+                        <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="EditUser">
+                            Edit
+                        </a> |
+
+                        <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="DeleteUser">
+                            Delete
+                        </a>
+                    </div>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<div class="col-6 text-right">
+    <a asp-controller="Home" asp-action="Back" class="btn btn-danger">
+        Back
+    </a>
+</div>

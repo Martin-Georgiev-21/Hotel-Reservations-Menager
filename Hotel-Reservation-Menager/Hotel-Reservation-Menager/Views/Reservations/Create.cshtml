@@ -1,59 +1,92 @@
 ﻿@model Hotel_Reservation_Menager.Models.Reservations
 
-@{
-    ViewData["Title"] = "Create";
-}
+<form method="post" asp-action="CreateReservation">
+    <div class="border p-3">
 
-<h1>Create</h1>
+        <div class="form-group row">
+            <h2 class="text-info pl-3">Add User</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="RoomId"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="RoomId" class="form-control" />
+                    </div>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="RoomId" class="control-label"></label>
-                <input asp-for="RoomId" class="form-control" />
-                <span asp-validation-for="RoomId" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="UserId"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="UserId" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="ListOfClients"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="ListOfClients" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Accommodation"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Accommodation" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Exemption"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Exemption" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="IsBreakfast"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="IsBreakfast" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="IsAllInclusive"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="IsAllInclusive" class="form-control" />
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+
+                        <div class="col">
+                            <input type="submit" class="btn btn-info w-100" value="Create" />
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100">Back</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" />
-                <span asp-validation-for="UserId" class="text-danger"></span>
+            <div class="col-4">
             </div>
-            <div class="form-group">
-                <label asp-for="Accommodation" class="control-label"></label>
-                <input asp-for="Accommodation" class="form-control" />
-                <span asp-validation-for="Accommodation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Exemption" class="control-label"></label>
-                <input asp-for="Exemption" class="form-control" />
-                <span asp-validation-for="Exemption" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IsBreakfast" class="control-label"></label>
-                <input asp-for="IsBreakfast" class="form-control" />
-                <span asp-validation-for="IsBreakfast" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IsAllInclusive" class="control-label"></label>
-                <input asp-for="IsAllInclusive" class="form-control" />
-                <span asp-validation-for="IsAllInclusive" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</form>
 

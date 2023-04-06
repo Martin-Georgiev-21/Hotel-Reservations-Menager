@@ -31,14 +31,17 @@ namespace Hotel_Reservation_Menager.Controllers
 
             if (activeUser != null)
             {
-                HttpContext.Session.SetInt32("UserId", activeUser.UserId);
 
                 if (activeUser.UserId == 1)
                 {
+                    Logged.LoggedIn = true;
+                    Logged.LoggedId = activeUser.UserId;
                     return View("../AfterLogInAdmin");
                 }
                 else
                 {
+                    Logged.LoggedIn = true;
+                    Logged.LoggedId = activeUser.UserId;
                     return View("../AfterLogInNoAdmin");
                 }
             }
@@ -49,11 +52,20 @@ namespace Hotel_Reservation_Menager.Controllers
             }
         }
 
-
+        public IActionResult Back()
+        {
+            if (Logged.LoggedId == 1)
+            {
+                return View("../AfterLogInAdmin");
+            }
+            else return View("../AfterLogInNoAdmin");
+        }
 
 
         public IActionResult LogOut()
         {
+            Logged.LoggedIn = false;
+            Logged.LoggedId = default;
             HttpContext.Session.Remove("UserId");
             ModelState.Clear();
             return View("Index");

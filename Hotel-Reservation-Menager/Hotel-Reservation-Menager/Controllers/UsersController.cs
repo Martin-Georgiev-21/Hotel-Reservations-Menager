@@ -63,9 +63,11 @@ namespace Hotel_Reservation_Menager.Controllers
                     break;
                 case ("Email", 1):
                     users = users.OrderBy(s => s.Email);
+                    clicked = 0;
                     break;
                 case ("Email", 0):
                     users = users.OrderByDescending(s => s.Email);
+                    clicked = 1;
                     break;
                 default:
                     users = users.OrderBy(s => s.UserId);

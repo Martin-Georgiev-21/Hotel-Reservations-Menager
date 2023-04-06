@@ -41,14 +41,14 @@
                                     @Html.ActionLink("▲", "Index", new { sortOrder = ViewBag.NameSortParam == "name_desc" ? "name" : "name_desc", currentFilter = ViewBag.CurrentFilter })
                                     @Html.ActionLink("▼", "Index", new { sortOrder = ViewBag.NameSortParam, currentFilter = ViewBag.CurrentFilter })
                                 </th>
-                                 <th>
+                                <th>
                                     @Html.DisplayNameFor(model => model.FirstName)
                                 </th>
                                 <th>
                                     @Html.ActionLink("▲", "Index", new { sortOrder = ViewBag.FirstNameSortParam == "first_name_desc" ? "first_name" : "first_name_desc", currentFilter = ViewBag.CurrentFilter })
                                     @Html.ActionLink("▼", "Index", new { sortOrder = ViewBag.FirstNameSortParam, currentFilter = ViewBag.CurrentFilter })
                                 </th>
-                                
+
                             </tr>
                         </table>
                     </div>
@@ -95,21 +95,35 @@
                 {
                     <tr>
                         <td width="50%">@obj.Id</td>
-                        <td width
+                        <td width="50%">@obj.FirstName</td>
+                        <td width="50%">@obj.LastName</td>
+                        <td width="50%">@obj.PhoneNumber</td>
+                        <td width="50%">@obj.Email</td>
+                        <td width="50%">@obj.IsAdult</td>
+                        <td class="text-center">
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="Clients" asp-route-Id="@obj.Id" asp-action="EditClient">
+                                    Edit
+                                </a> |
 
-="50%">@obj.FirstName</td>
-<td width="50%">@obj.LastName</td>
-<td width="50%">@obj.PhoneNumber</td>
-<td width="50%">@obj.Email</td>
-<td width="50%">@obj.IsAdult</td>
-</tr>
-}
-</tbody>
-</table>
-}
-else
-{
-<p>No clients found.</p>
-}
+                                <a asp-controller="Clients" asp-route-Id="@obj.Id" asp-action="DeleteClient">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No clients found.</p>
+    }
 
+</div>
+<div class="col-6 text-right">
+    <a asp-controller="Home" asp-action="Back" class="btn btn-danger">
+        Back
+    </a>
 </div>

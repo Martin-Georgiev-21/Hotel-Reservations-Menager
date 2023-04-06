@@ -12,17 +12,33 @@ namespace Hotel_Reservation_Manager.Controllers
 {
     public class ReservationsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _db;
 
-        public ReservationsController(ApplicationDbContext context)
+        public ReservationsController(ApplicationDbContext db)
         {
-            _context = context;
+            _db = db;
         }
 
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Reservations.ToListAsync());
+            IEnumerable<Reservations> objList = _db.Reservations;
+            return View(objList);
+        }
+
+        public IActionResult CreateReservation()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateReservation(Reservations obj)
+        {
+            //var obj = _db.ToDoLists.Find(id);
+            
+            _db.Reservations.Add(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Reservations/Details/5
@@ -33,7 +49,7 @@ namespace Hotel_Reservation_Manager.Controllers
                 return NotFound();
             }
 
-            var reservation = await _context.Reservations
+            var reservation = await _db.Reservations
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
@@ -65,7 +81,7 @@ namespace Hotel_Reservation_Manager.Controllers
                 reservation.UserId = (int)userId;
 
                 // Check if the room exists
-                var roomExists = await _context.Rooms.AnyAsync(r => r.Id == reservation.RoomId);
+                var roomExists = await _db.Rooms.AnyAsync(r => r.Id == reservation.RoomId);
                 if (!roomExists)
                 {
                     ModelState.AddModelError("RoomId", "The room does not exist.");
@@ -80,8 +96,8 @@ namespace Hotel_Reservation_Manager.Controllers
                 }
 
                 // Save the reservation
-                _context.Add(reservation);
-                await _context.SaveChangesAsync();
+                _db.Add(reservation);
+                await _db.SaveChangesAsync();
 
                 // Create a user reservation record for the logged-in user
                 var userReservation = new UserReservation
@@ -89,8 +105,8 @@ namespace Hotel_Reservation_Manager.Controllers
                     UserId = (int)userId,
                     ReservationId = reservation.Id
                 };
-                _context.Add(userReservation);
-                await _context.SaveChangesAsync();
+                _db.Add(userReservation);
+                await _db.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -109,7 +125,7 @@ namespace Hotel_Reservation_Manager.Controllers
                 return NotFound();
             }
 
-            var reservation = await _context.Reservations.FindAsync(id);
+            var reservation = await _db.Reservations.FindAsync(id);
             if (reservation == null)
             {
                 return NotFound();
@@ -132,8 +148,8 @@ namespace Hotel_Reservation_Manager.Controllers
             {
                 try
                 {
-                    _context.Update(reservation);
-                    await _context.SaveChangesAsync();
+                    _db.Update(reservation);
+                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -157,8 +173,8 @@ namespace Hotel_Reservation_Manager.Controllers
         public async Task<IActionResult> AddClientToReservation(int reservationId, int clientId)
         {
             // Find the reservation and client by their IDs
-            var reservation = await _context.Reservations.FindAsync(reservationId);
-            var client = await _context.Clients.FindAsync(clientId);
+            var reservation = await _db.Reservations.FindAsync(reservationId);
+            var client = await _db.Clients.FindAsync(clientId);
 
             if (reservation == null || client == null)
             {
@@ -173,9 +189,9 @@ namespace Hotel_Reservation_Manager.Controllers
                 Client = client
             };
 
-          
-            _context.ReservationClient.Add(reservationClient);
-            await _context.SaveChangesAsync();
+
+            _db.ReservationClient.Add(reservationClient);
+            await _db.SaveChangesAsync();
 
         
             return Ok();
@@ -189,7 +205,7 @@ namespace Hotel_Reservation_Manager.Controllers
                 return NotFound();
             }
 
-            var reservation = await _context.Reservations
+            var reservation = await _db.Reservations
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
@@ -204,15 +220,15 @@ namespace Hotel_Reservation_Manager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var reservation = await _context.Reservations.FindAsync(id);
-            _context.Reservations.Remove(reservation);
-            await _context.SaveChangesAsync();
+            var reservation = await _db.Reservations.FindAsync(id);
+            _db.Reservations.Remove(reservation);
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ReservationExists(int id)
         {
-            return _context.Reservations.Any(e => e.Id == id);
+            return _db.Reservations.Any(e => e.Id == id);
         }
     }
 }
