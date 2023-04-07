@@ -4,14 +4,16 @@ using Hotel_Reservation_Menager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hotel_Reservation_Menager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230407145339_AddAllTables")]
+    partial class AddAllTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +27,9 @@ namespace Hotel_Reservation_Menager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ClientsId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -49,6 +54,8 @@ namespace Hotel_Reservation_Menager.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClientsId");
+
                     b.ToTable("Clients");
                 });
 
@@ -66,6 +73,10 @@ namespace Hotel_Reservation_Menager.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ReservationId");
 
                     b.ToTable("ReservationClient");
                 });
@@ -193,6 +204,37 @@ namespace Hotel_Reservation_Menager.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Hotel_Reservation_Menager.Models.Clients", b =>
+                {
+                    b.HasOne("Hotel_Reservation_Menager.Models.Clients", null)
+                        .WithMany("ListOfClients")
+                        .HasForeignKey("ClientsId");
+                });
+
+            modelBuilder.Entity("Hotel_Reservation_Menager.Models.ReservationClient", b =>
+                {
+                    b.HasOne("Hotel_Reservation_Menager.Models.Clients", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hotel_Reservation_Menager.Models.Reservations", "Reservation")
+                        .WithMany()
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Reservation");
+                });
+
+            modelBuilder.Entity("Hotel_Reservation_Menager.Models.Clients", b =>
+                {
+                    b.Navigation("ListOfClients");
                 });
 #pragma warning restore 612, 618
         }

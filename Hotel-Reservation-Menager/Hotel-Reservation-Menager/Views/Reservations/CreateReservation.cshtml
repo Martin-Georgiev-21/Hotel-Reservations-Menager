@@ -4,7 +4,7 @@
     <div class="border p-3">
 
         <div class="form-group row">
-            <h2 class="text-info pl-3">Add User</h2>
+            <h2 class="text-info pl-3">Create Reservation</h2>
         </div>
         <div class="row">
             <div class="col-8">
@@ -14,15 +14,6 @@
                     </div>
                     <div class="col-8">
                         <input asp-for="RoomId" class="form-control" />
-                    </div>
-
-                </div>
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="ListOfClients"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="ListOfClients" class="form-control" />
                     </div>
 
                 </div>
@@ -49,7 +40,7 @@
                         <label asp-for="IsBreakfast"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="IsBreakfast" class="form-control" />
+                        <input asp-for="IsBreakfast" id="checkbox" class="form-control" />
                     </div>
 
                 </div>
@@ -58,7 +49,7 @@
                         <label asp-for="IsAllInclusive"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="IsAllInclusive" class="form-control" />
+                        <input asp-for="IsAllInclusive" id="checkbox" class="form-control" />
                     </div>
 
                 </div>
@@ -66,7 +57,7 @@
                     <div class="col-8 offset-4 row">
 
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Create" />
+                            <input type="submit" class="btn btn-info w-100" value="Choose Clients" />
                         </div>
                         <div class="col">
                             <a asp-action="Index" class="btn btn-success w-100">Back</a>

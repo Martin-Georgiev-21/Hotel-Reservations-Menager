@@ -71,10 +71,6 @@ namespace Hotel_Reservation_Menager.Controllers
             return View(pageData);
         }
 
-
-
-
-
         public IActionResult CreateClient()
         {
             return View();

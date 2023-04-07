@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Hotel_Reservation_Menager;
+using System;
 
 namespace Hotel_Reservation_Manager.Controllers
 {
@@ -20,11 +21,32 @@ namespace Hotel_Reservation_Manager.Controllers
             _db = db;
         }
 
+
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Reservations> objList = _db.Reservations;
-            return View(objList);
+            IEnumerable<Reservations> reservations = _db.Reservations;
+            IEnumerable<ReservationClient> reservationClients = _db.ReservationClient;
+            IEnumerable<Clients> clients = _db.Clients;
+            BigView bigview = new BigView(reservations, reservationClients, clients);
+            foreach (var reservation in reservations)
+            {
+                Rooms chosenRoom = new Rooms();
+                foreach (var room in _db.Rooms)
+                {
+                    if (room.Number == reservation.RoomId) 
+                    { 
+                        chosenRoom = room;
+                        if (DateTime.Parse(reservation.Exemption) < DateTime.Today || DateTime.Parse(reservation.Accommodation) > DateTime.Today)
+                        {
+                            chosenRoom.IsAvailable = true;
+                        }
+                        else chosenRoom.IsAvailable = false;
+                    }
+                }
+            }
+            _db.SaveChanges();
+            return View(bigview);
         }
 
         public IActionResult CreateReservation()
@@ -35,88 +57,170 @@ namespace Hotel_Reservation_Manager.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateReservation(Reservations obj)
         {
-            //var obj = _db.ToDoLists.Find(id);
             obj.UserId = Logged.LoggedId;
+            Rooms chosenRoom = new Rooms();
+            foreach (var room in _db.Rooms)
+            {
+                if (room.Number == obj.RoomId) chosenRoom = room;
+            }
+            if (chosenRoom == null || obj.Accommodation == null || obj.Exemption == null || (DateTime.Parse(obj.Accommodation) > DateTime.Parse(obj.Exemption)) || chosenRoom.IsAvailable == false)
+            {
+                return RedirectToAction("CreateReservation");
+            }
+            else if (DateTime.Parse(obj.Exemption) < DateTime.Today || DateTime.Parse(obj.Accommodation) > DateTime.Today)
+            {
+                chosenRoom.IsAvailable = true;
+            }
+            else
+            {
+                chosenRoom.IsAvailable = false;
+            }
             _db.Reservations.Add(obj);
+            _db.Rooms.Update(chosenRoom);
+            _db.SaveChanges();
+            foreach (var element in _db.Reservations)
+            {
+                if (element.RoomId == obj.RoomId && DateTime.Parse(element.Accommodation) == DateTime.Parse(obj.Accommodation) && DateTime.Parse(element.Exemption) == DateTime.Parse(obj.Exemption))
+                {
+                    Logged.CurrentReservation = element;
+                }
+            }
+            return RedirectToAction("ChooseClients");
+        }
+        public IActionResult ChooseClients(string sortOrder, string searchString, int clicked = 0, int page = 1, int pageSize = 6)
+        {
+            var clients = _db.Clients.AsQueryable();
+
+            // Filter the data based on the search string
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                clients = clients.Where(c =>
+                    c.FirstName.Contains(searchString) ||
+                    c.LastName.Contains(searchString) ||
+                    c.PhoneNumber.Contains(searchString) ||
+                    c.Email.Contains(searchString));
+            }
+
+            var totalCount = clients.Count();
+            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+            var currentclicked = clicked;
+
+            switch (sortOrder, clicked)
+            {
+                case ("FirstName", 1):
+                    clients = clients.OrderBy(s => s.FirstName);
+                    clicked = 0;
+                    break;
+                case ("FirstName", 0):
+                    clients = clients.OrderByDescending(s => s.FirstName);
+                    clicked = 1;
+                    break;
+                case ("LastName", 1):
+                    clients = clients.OrderBy(s => s.LastName);
+                    clicked = 0;
+                    break;
+                case ("LastName", 0):
+                    clients = clients.OrderByDescending(s => s.LastName);
+                    clicked = 1;
+                    break;
+                default:
+                    clients = clients.OrderBy(s => s.Id);
+                    break;
+            }
+
+            var pageData = clients.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            Logged.ReservationClient = _db.ReservationClient.ToList();
+
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalCount = totalCount;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.Clicked = clicked;
+            ViewBag.CurrentClicked = currentclicked;
+            ViewBag.SortOrder = sortOrder;
+            ViewData["CurrentFilter"] = searchString;
+
+            return View(pageData);
+        }
+
+        public IActionResult AddClient(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var obj = _db.Clients.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return AddClient(obj);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddClient(Clients obj)
+        {
+            ReservationClient reservationClient = new ReservationClient();
+            reservationClient.ClientId = obj.Id;
+            reservationClient.ReservationId = Logged.CurrentReservation.Id;
+            Rooms chosenRoom = new Rooms();
+            foreach (var room in _db.Rooms)
+            {   
+                if (room.Number == Logged.CurrentReservation.RoomId) chosenRoom = room;
+            }
+            if (obj.IsAdult == true) Logged.CurrentReservation.Price += chosenRoom.PricePerAdult;
+            else Logged.CurrentReservation.Price += chosenRoom.PricePerChild;
+            _db.Reservations.Update(Logged.CurrentReservation);
+            _db.ReservationClient.Add(reservationClient);
+            _db.SaveChanges();
+            return RedirectToAction("ChooseClients");
+        }
+        public IActionResult RemoveClient(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var obj = _db.Clients.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return RemoveClient(obj);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RemoveClient(Clients obj)
+        {
+            ReservationClient reservationClient = new ReservationClient();
+            reservationClient.ClientId = obj.Id;
+            reservationClient.ReservationId = Logged.CurrentReservation.Id;
+            Rooms chosenRoom = new Rooms();
+            foreach (var room in _db.Rooms)
+            {
+                if (room.Number == Logged.CurrentReservation.RoomId) chosenRoom = room;
+            }
+            if (obj.IsAdult == true) Logged.CurrentReservation.Price -= chosenRoom.PricePerAdult;
+            else Logged.CurrentReservation.Price -= chosenRoom.PricePerChild;
+            foreach (var element in _db.ReservationClient)
+            {
+                if (element.ClientId == reservationClient.ClientId && element.ReservationId == Logged.CurrentReservation.Id) reservationClient = element;
+            }
+            _db.Reservations.Update(Logged.CurrentReservation);
+            _db.ReservationClient.Remove(reservationClient);
+            _db.SaveChanges();
+            return RedirectToAction("ChooseClients");
+        }
+        public IActionResult Done()
+        {
+            if (Logged.CurrentReservation.IsAllInclusive == true) Logged.CurrentReservation.Price += Logged.CurrentReservation.Price * 10 / 100;
+            if (Logged.CurrentReservation.IsBreakfast == true) Logged.CurrentReservation.Price += Logged.CurrentReservation.Price * 5 / 100;
+            if (Logged.CurrentReservation.IsAllInclusive == true && Logged.CurrentReservation.IsBreakfast) Logged.CurrentReservation.Price += Logged.CurrentReservation.Price * 10 / 100;
+            _db.Reservations.Update(Logged.CurrentReservation);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        // GET: Reservations/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var reservation = await _db.Reservations
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-
-            return View(reservation);
-        }
-
-        // GET: Reservations/Create
-        public IActionResult Create()
-        {
-            
-                return View();
-            
-        }
-
-
-        // POST: Reservations/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RoomId,Accommodation,Exemption,IsBreakfast,IsAllInclusive,Price,StartDate,EndDate")] Reservations reservation)
-        {
-            if (ModelState.IsValid)
-            {
-                int? userId = HttpContext.Session.GetInt32("UserId");
-
-                // Set the user ID on the reservation
-                reservation.UserId = (int)userId;
-
-                // Check if the room exists
-                var roomExists = await _db.Rooms.AnyAsync(r => r.Id == reservation.RoomId);
-                if (!roomExists)
-                {
-                    ModelState.AddModelError("RoomId", "The room does not exist.");
-                    return View(reservation);
-                }
-
-                // Check if the end date is greater than the start date
-                if (reservation.Accommodation.CompareTo(reservation.Exemption) >= 0)
-                {
-                    ModelState.AddModelError("Accommodation", "The end date value must be before the start value.");
-                    return View(reservation);
-                }
-
-                // Save the reservation
-                _db.Add(reservation);
-                await _db.SaveChangesAsync();
-
-                // Create a user reservation record for the logged-in user
-                var userReservation = new UserReservation
-                {
-                    UserId = (int)userId,
-                    ReservationId = reservation.Id
-                };
-                _db.Add(userReservation);
-                await _db.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(reservation);
-        }
-
-
-
 
         // GET: Reservations/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -183,15 +287,7 @@ namespace Hotel_Reservation_Manager.Controllers
                 return NotFound();
             }
 
-           
-            var reservationClient = new ReservationClient
-            {
-                Reservation = reservation,
-                Client = client
-            };
-
-
-            _db.ReservationClient.Add(reservationClient);
+          
             await _db.SaveChangesAsync();
 
         

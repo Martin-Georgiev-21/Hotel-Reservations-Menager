@@ -1,0 +1,146 @@
+﻿@model IEnumerable<Hotel_Reservation_Menager.Models.Clients>
+
+@{
+    ViewData["Title"] = "Clients";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Clients List</h2>
+        </div>
+    </div>
+
+    <br /><br />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-controller="Reservations" asp-action="Index" method="get">
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Search:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="searchString" value="@ViewData["CurrentFilter"]" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <a asp-controller="Clients" asp-action="Index" class="btn btn-secondary">Clear</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        @Html.ActionLink("First Name", "Index", new { sortOrder = "FirstName", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
+                    </th>
+                    <th>
+                        @Html.ActionLink("Last Name", "Index", new { sortOrder = "LastName", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
+                    </th>
+                    <th>
+                        Phone Number
+                    </th>
+                    <th>
+                        Email Address
+                    </th>
+                    <th>
+                        Adult
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td width="50%">@obj.Id</td>
+                        <td width="50%">@obj.FirstName</td>
+                        <td width="50%">@obj.LastName</td>
+                        <td width="50%">@obj.PhoneNumber</td>
+                        <td width="50%">@obj.Email</td>
+                        <td width="50%">@obj.IsAdult</td>
+                        <td class="text-center">
+                            @if (Helper.IsAdded(obj.Id) == false)
+                            {
+                                <div class="w-75 btn-group" role="group">
+                                    <a asp-controller="Reservations" asp-route-Id="@obj.Id" asp-action="AddClient">
+                                        Add
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="w-75 btn-group" role="group">
+                                    <a asp-controller="Reservations" asp-route-Id="@obj.Id" asp-action="RemoveClient">
+                                        Remove
+                                    </a>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No clients found.</p>
+    }
+
+    <div class="pagination">
+        <ul>
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <div style="display:inline-block">
+                    <p @(i == ViewBag.Page ? "class=active" : "")>
+                        <a href="/Reservations?sortOrder=@ViewBag.SortOrder&searchString=@ViewBag.SearchString&clicked=@ViewBag.CurrentClicked&page=@i&pageSize=@ViewBag.PageSize">@i</a>
+                    </p>
+                </div>
+            }
+        </ul>
+    </div>
+
+    <form asp-controller="Clients" asp-action="Index" method="get">
+        <div class="form-group">
+            <label for="pageSize">Page Size:</label>
+            @if (ViewBag.PageSize == 3)
+            {
+                <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
+                    <option selected="selected" value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
+                    <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
+                    <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                </select>
+            }
+            else if (ViewBag.PageSize == 6)
+            {
+                <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
+                    <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
+                    <option selected="selected" value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
+                    <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                </select>
+            }
+            else
+            {
+                <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
+                    <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
+                    <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
+                    <option selected="selected" value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                </select>
+            }
+        </div>
+    </form>
+    <div class="col-6 text-right">
+        <a asp-controller="Reservations" asp-action="Done" class="btn btn-danger">
+            Done
+        </a>
+    </div>
+
