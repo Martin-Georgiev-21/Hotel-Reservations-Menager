@@ -16,7 +16,7 @@ namespace Hotel_Reservation_Menager.Controllers
         {
             _db = db;
         }
-        public IActionResult Index(string sortOrder, string searchString, int clicked = 0, int page = 1, int pageSize = 6)
+        public IActionResult Index(string sortOrder, string searchString, int clicked = 0, int page = 1, int pageSize = 10)
         {
             var clients = _db.Clients.AsQueryable();
 
@@ -125,6 +125,25 @@ namespace Hotel_Reservation_Menager.Controllers
             _db.Clients.Remove(obj);
             _db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public IActionResult ClientHistory(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var obj = _db.Clients.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            Logged.CurrentHistory = obj;
+            IEnumerable<Reservations> reservations = _db.Reservations;
+            IEnumerable<ReservationClient> reservationClients = _db.ReservationClient;
+            IEnumerable<Clients> clients = _db.Clients;
+            BigView bigview = new BigView(reservations, reservationClients, clients);
+            return View(bigview);
         }
     }
 }

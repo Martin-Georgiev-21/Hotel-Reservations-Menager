@@ -3,7 +3,7 @@
 <h1>Reservations</h1>
 
 <p>
-    <a asp-action="CreateReservation">Create New</a>
+    <a asp-action="CreateReservation" class="btn btn-primary">Create New</a>
     
 </p>
 
@@ -40,39 +40,42 @@
     <tbody>
         @foreach (var obj in Model.Reservations)
         {
-            <tr>
-                <td width="50%">@obj.RoomId</td>
-                <td width="50%">@obj.UserId</td>
-                <td>
-                    @foreach (var client in Model.Clients)
-                    {
-                        @foreach (var resClients in Model.ReservationClient)
+            @if (DateTime.Parse(obj.Exemption) >= DateTime.Today)
+            {
+                <tr>
+                    <td width="50%">@obj.RoomId</td>
+                    <td width="50%">@obj.UserId</td>
+                    <td>
+                        @foreach (var client in Model.Clients)
                         {
-                            if (obj.Id == resClients.ReservationId && client.Id == resClients.ClientId)
-                            { 
-                            <p>@client.FirstName @client.LastName</p>
+                            @foreach (var resClients in Model.ReservationClient)
+                            {
+                                if (obj.Id == resClients.ReservationId && client.Id == resClients.ClientId)
+                                {
+                                <p>@client.FirstName @client.LastName</p>
+                                }
                             }
                         }
-                    }
-                </td>
-                <td width="50%">@obj.Accommodation</td>
-                <td width="50%">@obj.Exemption</td>
-                <td width="50%">@obj.IsBreakfast</td>
-                <td width="50%">@obj.IsAllInclusive</td>
-                <td width="50%">@obj.Price лв.</td>
-                <td class="text-center">
-                    <div class="w-75 btn-group" role="group">
-                        <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="EditUser">
-                            Edit
-                        </a> |
+                    </td>
+                    <td width="50%">@obj.Accommodation</td>
+                    <td width="50%">@obj.Exemption</td>
+                    <td width="50%">@obj.IsBreakfast</td>
+                    <td width="50%">@obj.IsAllInclusive</td>
+                    <td width="50%">@obj.Price лв.</td>
+                    <td class="text-center">
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Reservations" class="btn btn-info w-100" asp-route-Id="@obj.Id" asp-action="EditReservations">
+                                Edit
+                            </a>
 
-                        <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="DeleteUser">
-                            Delete
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        }
+                            <a asp-controller="Reservations" class="btn btn-danger" asp-route-Id="@obj.Id" asp-action="DeleteReservations">
+                                Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                }
+            }
     </tbody>
 </table>
 <div class="col-6 text-right">

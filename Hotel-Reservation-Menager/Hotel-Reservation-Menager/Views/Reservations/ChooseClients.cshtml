@@ -72,7 +72,7 @@
                             @if (Helper.IsAdded(obj.Id) == false)
                             {
                                 <div class="w-75 btn-group" role="group">
-                                    <a asp-controller="Reservations" asp-route-Id="@obj.Id" asp-action="AddClient">
+                                    <a asp-controller="Reservations" class="btn btn-success" asp-route-Id="@obj.Id" asp-action="AddClient">
                                         Add
                                     </a>
                                 </div>
@@ -80,7 +80,7 @@
                             else
                             {
                                 <div class="w-75 btn-group" role="group">
-                                    <a asp-controller="Reservations" asp-route-Id="@obj.Id" asp-action="RemoveClient">
+                                    <a asp-controller="Reservations" class="btn btn-danger" asp-route-Id="@obj.Id" asp-action="RemoveClient">
                                         Remove
                                     </a>
                                 </div>

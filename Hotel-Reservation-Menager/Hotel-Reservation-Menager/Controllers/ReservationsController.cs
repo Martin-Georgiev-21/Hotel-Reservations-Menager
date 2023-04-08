@@ -23,7 +23,7 @@ namespace Hotel_Reservation_Manager.Controllers
 
 
         // GET: Reservations
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             IEnumerable<Reservations> reservations = _db.Reservations;
             IEnumerable<ReservationClient> reservationClients = _db.ReservationClient;
@@ -127,7 +127,15 @@ namespace Hotel_Reservation_Manager.Controllers
                     clients = clients.OrderBy(s => s.Id);
                     break;
             }
+            int br = 0;
+            foreach (var resClient in _db.ReservationClient)
+            {
+                if (resClient.ReservationId == Logged.CurrentReservation.Id) br++;
+            }
 
+            if (br == 0) Logged.CurrentReservation.Price = 0;
+            _db.Reservations.Update(Logged.CurrentReservation);
+            _db.SaveChanges();
             var pageData = clients.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             Logged.ReservationClient = _db.ReservationClient.ToList();
@@ -169,8 +177,21 @@ namespace Hotel_Reservation_Manager.Controllers
             {   
                 if (room.Number == Logged.CurrentReservation.RoomId) chosenRoom = room;
             }
-            if (obj.IsAdult == true) Logged.CurrentReservation.Price += chosenRoom.PricePerAdult;
-            else Logged.CurrentReservation.Price += chosenRoom.PricePerChild;
+            if (obj.IsAdult == true)
+            {
+                if (Logged.CurrentReservation.IsAllInclusive == true && Logged.CurrentReservation.IsBreakfast && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 10 / 110;
+                else if (Logged.CurrentReservation.IsAllInclusive == true && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 10 / 110;
+                else if (Logged.CurrentReservation.IsBreakfast == true && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 5 / 105;
+                Logged.CurrentReservation.Price += ((DateTime.Parse(Logged.CurrentReservation.Exemption) - DateTime.Parse(Logged.CurrentReservation.Accommodation)).Days) * chosenRoom.PricePerAdult;
+            }
+            else
+            {
+                if (Logged.CurrentReservation.IsAllInclusive == true && Logged.CurrentReservation.IsBreakfast && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 10 / 110;
+                else if (Logged.CurrentReservation.IsAllInclusive == true && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 10 / 110;
+                else if (Logged.CurrentReservation.IsBreakfast == true && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 5 / 105;
+                Logged.CurrentReservation.Price += ((DateTime.Parse(Logged.CurrentReservation.Exemption) - DateTime.Parse(Logged.CurrentReservation.Accommodation)).Days) * chosenRoom.PricePerChild;
+            }
+            Logged.IsClicked = true;
             _db.Reservations.Update(Logged.CurrentReservation);
             _db.ReservationClient.Add(reservationClient);
             _db.SaveChanges();
@@ -201,12 +222,25 @@ namespace Hotel_Reservation_Manager.Controllers
             {
                 if (room.Number == Logged.CurrentReservation.RoomId) chosenRoom = room;
             }
-            if (obj.IsAdult == true) Logged.CurrentReservation.Price -= chosenRoom.PricePerAdult;
-            else Logged.CurrentReservation.Price -= chosenRoom.PricePerChild;
+            if (obj.IsAdult == true)
+            {
+                if (Logged.CurrentReservation.IsAllInclusive == true && Logged.CurrentReservation.IsBreakfast && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 10 / 110;
+                else if (Logged.CurrentReservation.IsAllInclusive == true && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 10 / 110;
+                else if (Logged.CurrentReservation.IsBreakfast == true && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 5 / 105;
+                Logged.CurrentReservation.Price -= ((DateTime.Parse(Logged.CurrentReservation.Exemption) - DateTime.Parse(Logged.CurrentReservation.Accommodation)).Days) * chosenRoom.PricePerAdult;
+            }
+            else
+            {
+                if (Logged.CurrentReservation.IsAllInclusive == true && Logged.CurrentReservation.IsBreakfast && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 10 / 110;
+                else if (Logged.CurrentReservation.IsAllInclusive == true && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 10 / 110;
+                else if (Logged.CurrentReservation.IsBreakfast == true && Logged.IsClicked == false) Logged.CurrentReservation.Price -= Logged.CurrentReservation.Price * 5 / 105;
+                Logged.CurrentReservation.Price -= ((DateTime.Parse(Logged.CurrentReservation.Exemption) - DateTime.Parse(Logged.CurrentReservation.Accommodation)).Days) * chosenRoom.PricePerChild;
+            }
             foreach (var element in _db.ReservationClient)
             {
                 if (element.ClientId == reservationClient.ClientId && element.ReservationId == Logged.CurrentReservation.Id) reservationClient = element;
             }
+            Logged.IsClicked = true;
             _db.Reservations.Update(Logged.CurrentReservation);
             _db.ReservationClient.Remove(reservationClient);
             _db.SaveChanges();
@@ -214,119 +248,90 @@ namespace Hotel_Reservation_Manager.Controllers
         }
         public IActionResult Done()
         {
-            if (Logged.CurrentReservation.IsAllInclusive == true) Logged.CurrentReservation.Price += Logged.CurrentReservation.Price * 10 / 100;
-            if (Logged.CurrentReservation.IsBreakfast == true) Logged.CurrentReservation.Price += Logged.CurrentReservation.Price * 5 / 100;
-            if (Logged.CurrentReservation.IsAllInclusive == true && Logged.CurrentReservation.IsBreakfast) Logged.CurrentReservation.Price += Logged.CurrentReservation.Price * 10 / 100;
+            if (Logged.IsClicked == true)
+            {
+                if (Logged.CurrentReservation.IsAllInclusive == true && Logged.CurrentReservation.IsBreakfast) Logged.CurrentReservation.Price += Logged.CurrentReservation.Price * 10 / 100;
+                else if (Logged.CurrentReservation.IsAllInclusive == true) Logged.CurrentReservation.Price += Logged.CurrentReservation.Price * 10 / 100;
+                else if (Logged.CurrentReservation.IsBreakfast == true) Logged.CurrentReservation.Price += Logged.CurrentReservation.Price * 5 / 100;
+            }
+            Logged.IsClicked = false;
             _db.Reservations.Update(Logged.CurrentReservation);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
         // GET: Reservations/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult DeleteReservations(int? id)
         {
-            if (id == null)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-
-            var reservation = await _db.Reservations.FindAsync(id);
-            if (reservation == null)
+            var obj = _db.Reservations.Find(id);
+            if (obj == null)
             {
                 return NotFound();
             }
-            return View(reservation);
+            foreach (var element in _db.Rooms)
+            {
+                if (obj.RoomId == element.Number)
+                {
+                    element.IsAvailable = true;
+                    _db.Rooms.Update(element);
+                    break;
+                }
+            }
+            _db.SaveChanges();
+            return DeleteReservations(obj);
         }
 
 
         // POST: Reservations/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RoomId,UserId,Accommodation,Exemption,IsBreakfast,IsAllInclusive,Price")] Reservations reservation)
+        public IActionResult DeleteReservations(Reservations obj)
         {
-            if (id != reservation.Id)
+            foreach (var element in _db.ReservationClient)
+            {
+                if (element.ReservationId == obj.Id) _db.ReservationClient.Remove(element);
+            }
+            _db.Reservations.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult EditReservations(int? id)
+        {
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            var obj = _db.Reservations.Find(id);
+            if (obj == null)
             {
-                try
-                {
-                    _db.Update(reservation);
-                    await _db.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ReservationExists(reservation.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(reservation);
+            Logged.CurrentReservation = obj;
+            return View(obj);
         }
-
-        // POST: Reservations/AddClientToReservation
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddClientToReservation(int reservationId, int clientId)
+        public IActionResult EditReservations(Reservations obj)
         {
-            // Find the reservation and client by their IDs
-            var reservation = await _db.Reservations.FindAsync(reservationId);
-            var client = await _db.Clients.FindAsync(clientId);
-
-            if (reservation == null || client == null)
+            Rooms chosenRoom = new Rooms();
+            foreach (var room in _db.Rooms)
             {
-                
-                return NotFound();
+                if (room.Number == obj.RoomId) chosenRoom = room;
             }
-
-          
-            await _db.SaveChangesAsync();
-
-        
-            return Ok();
-        }
-
-        // GET: Reservations/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+            if (chosenRoom == null || obj.Accommodation == null || obj.Exemption == null || (DateTime.Parse(obj.Accommodation) > DateTime.Parse(obj.Exemption)) || chosenRoom.IsAvailable == false)
             {
-                return NotFound();
+                return EditReservations(obj.Id);
             }
-
-            var reservation = await _db.Reservations
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-
-            return View(reservation);
+            _db.Reservations.Update(obj);
+            _db.SaveChanges();
+            return EditReservations(obj.Id);
         }
 
-        // POST: Reservations/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var reservation = await _db.Reservations.FindAsync(id);
-            _db.Reservations.Remove(reservation);
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ReservationExists(int id)
-        {
-            return _db.Reservations.Any(e => e.Id == id);
-        }
     }
 }
 

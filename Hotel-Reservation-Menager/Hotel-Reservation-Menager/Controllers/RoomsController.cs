@@ -22,7 +22,7 @@ namespace Hotel_Reservation_Menager.Controllers
         }
 
         // GET: Rooms
-        public IActionResult Index(string sortOrder, int clicked = 0, int page = 1, int pageSize = 6)
+        public IActionResult Index(string sortOrder, int clicked = 0, int page = 1, int pageSize = 10)
         {
             var rooms = from s in _db.Rooms
                         select s;
@@ -72,6 +72,36 @@ namespace Hotel_Reservation_Menager.Controllers
             ViewBag.CurrentClicked = currentclicked;
             ViewBag.SortOrder = sortOrder;
 
+            IEnumerable<Reservations> reservations = _db.Reservations;
+            if (reservations.Count() > 0)
+            {
+                foreach (var reservation in _db.Reservations)
+                {
+                    Rooms chosenRoom = new Rooms();
+                    foreach (var room in _db.Rooms)
+                    {
+                        if (room.Number == reservation.RoomId)
+                        {
+                            chosenRoom = room;
+                            if (DateTime.Parse(reservation.Exemption) < DateTime.Today || DateTime.Parse(reservation.Accommodation) > DateTime.Today)
+                            {
+                                chosenRoom.IsAvailable = true;
+                            }
+                            else chosenRoom.IsAvailable = false;
+                        }
+                    }
+                }
+            }
+            else 
+            {
+                foreach (var room in _db.Rooms)
+                {
+                    room.IsAvailable = true;
+                }
+            }
+
+
+            _db.SaveChanges();
             return View(pageData);
         }
 

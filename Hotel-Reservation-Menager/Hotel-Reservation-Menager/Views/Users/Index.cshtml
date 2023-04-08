@@ -2,9 +2,38 @@
 
 
 <h2>Users Table</h2>
-    <a asp-controller="Users" asp-action="CreateUser">
-        Create New User
-    </a>
+<div class="row pt-4">
+    <div class="col-6">
+        <h2 class="text-primary">User List</h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-controller="Users" asp-action="CreateUser" class="btn btn-primary">
+            Create User
+        </a>
+    </div>
+</div>
+
+<br />
+<br />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-controller="Users" asp-action="Index" method="get">
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Search:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" name="searchString" value="@ViewData["CurrentFilter"]" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a asp-controller="Users" asp-action="Index" class="btn btn-secondary">Clear</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -12,19 +41,19 @@
                 ID
             </th>
             <th>
-                @Html.ActionLink("First Name", "Index", new { sortOrder = "FirstName",clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
+                @Html.ActionLink("First Name", "Index", new { sortOrder = "FirstName", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
             </th>
             <th>
-                @Html.ActionLink("Middle Name", "Index", new { sortOrder = "MiddleName",clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
+                @Html.ActionLink("Middle Name", "Index", new { sortOrder = "MiddleName", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
             </th>
             <th>
-                @Html.ActionLink("Last Name", "Index", new { sortOrder = "LastName",clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
+                @Html.ActionLink("Last Name", "Index", new { sortOrder = "LastName", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
             </th>
             <th>
-                @Html.ActionLink("Username", "Index", new { sortOrder = "Username", clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
+                @Html.ActionLink("Username", "Index", new { sortOrder = "Username", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
             </th>
             <th>
-                @Html.ActionLink("Email", "Index", new { sortOrder = "Email", clicked = ViewBag.Clicked, page=ViewBag.Page, pageSize = ViewBag.PageSize })
+                @Html.ActionLink("Email", "Index", new { sortOrder = "Email", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
             </th>
             <th>
                 EGN
@@ -43,39 +72,39 @@
     <tbody>
         @foreach (var obj in Model)
         {
-                <tr>
-                    <td width="50%">@obj.UserId</td>
-                    <td width="50%">@obj.FirstName</td>
-                    <td width="50%">@obj.MiddleName</td>
-                    <td width="50%">@obj.LastName</td>
-                    <td width="50%">@obj.Username</td>
-                    <td width="50%">@obj.Email</td>
-                    <td width="50%">@obj.Egn</td>
-                    <td width="50%">@obj.PhoneNumber</td>
-                    <td width="50%">@obj.HireDate</td>
-                    @if (obj.TerminationDate == null)
-                    {
-                        <td width="50%">No Termination Date</td>
-                    }
-                    else
-                    {
-                        <td width="50%">@obj.TerminationDate</td>
-                    }
-                    @if (obj.UserId != Logged.LoggedId)
-                    {
-                        <td class="text-center">
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="EditUser">
-                                    Edit
-                                </a> |
-                            
-                                <a asp-controller="Users" asp-route-Id="@obj.UserId" asp-action="DeleteUser">
-                                    Delete
-                                </a>
-                            </div>
-                        </td>
-                    }
-                </tr>
+            <tr>
+                <td width="50%">@obj.UserId</td>
+                <td width="50%">@obj.FirstName</td>
+                <td width="50%">@obj.MiddleName</td>
+                <td width="50%">@obj.LastName</td>
+                <td width="50%">@obj.Username</td>
+                <td width="50%">@obj.Email</td>
+                <td width="50%">@obj.Egn</td>
+                <td width="50%">@obj.PhoneNumber</td>
+                <td width="50%">@obj.HireDate</td>
+                @if (obj.TerminationDate == null)
+                {
+                    <td width="50%">No Termination Date</td>
+                }
+                else
+                {
+                    <td width="50%">@obj.TerminationDate</td>
+                }
+                @if (obj.UserId != Logged.LoggedId)
+                {
+                    <td class="text-center">
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Users" class="btn btn-info w-100" asp-route-Id="@obj.UserId" asp-action="EditUser">
+                                Edit
+                            </a>
+
+                            <a asp-controller="Users" class="btn btn-danger" asp-route-Id="@obj.UserId" asp-action="DeleteUser">
+                                Delete
+                            </a>
+                        </div>
+                    </td>
+                }
+            </tr>
         }
     </tbody>
 </table>
@@ -86,7 +115,7 @@
         {
             <div style="display:inline-block">
                 <p @(i == ViewBag.Page ? "class=active" : "")>
-                    <a href="/Users?sortOrder=@ViewBag.SortOrder&clicked=@ViewBag.CurrentClicked&page=@i&pageSize=@ViewBag.PageSize">@i</a>
+                    <a href="/Users?searchString=@ViewBag.SearchString&sortOrder=@ViewBag.SortOrder&clicked=@ViewBag.CurrentClicked&page=@i&pageSize=@ViewBag.PageSize">@i</a>
                 </p>
             </div>
         }
@@ -96,28 +125,28 @@
 <form asp-controller="Users" asp-action="Index" method="get">
     <div class="form-group">
         <label for="pageSize">Page Size:</label>
-        @if (ViewBag.PageSize == 3)
+        @if (ViewBag.PageSize == 10)
         {
             <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
-                <option selected="selected" value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
-                <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
-                <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                <option selected="selected" value="10" href=@(ViewBag.PageSize == 10 ? "selected" : "" )>10</option>
+                <option value="25" href=@(ViewBag.PageSize == 25 ? "selected" : "" )>25</option>
+                <option value="50" href=@(ViewBag.PageSize == 50 ? "selected" : "" )>50</option>
             </select>
         }
-        else if (ViewBag.PageSize == 6)
+        else if (ViewBag.PageSize == 25)
         {
             <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
-                <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
-                <option selected="selected" value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
-                <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                <option value="10" href=@(ViewBag.PageSize == 10 ? "selected" : "" )>10</option>
+                <option selected="selected" value="25" href=@(ViewBag.PageSize == 25 ? "selected" : "" )>25</option>
+                <option value="50" href=@(ViewBag.PageSize == 50 ? "selected" : "" )>50</option>
             </select>
         }
         else
         {
             <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
-                <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
-                <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
-                <option selected="selected" value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                <option value="10" href=@(ViewBag.PageSize == 10 ? "selected" : "" )>10</option>
+                <option value="25" href=@(ViewBag.PageSize == 25 ? "selected" : "" )>25</option>
+                <option selected="selected" value="50" href=@(ViewBag.PageSize == 50 ? "selected" : "" )>50</option>
             </select>
         }
     </div>

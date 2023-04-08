@@ -1,0 +1,60 @@
+﻿@model Hotel_Reservation_Menager.Models.BigView
+
+<h1>History</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Room Number
+            </th>
+            <th>
+                User
+            </th>
+            <th>
+                Accommodation
+            </th>
+            <th>
+                Exemption
+            </th>
+            <th>
+                Breakfast
+            </th>
+            <th>
+                AllInclusive
+            </th>
+            <th>
+                Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var obj in Model.Reservations)
+        {
+            foreach (var resCl in Model.ReservationClient)
+            {
+                @if (DateTime.Parse(obj.Exemption) < DateTime.Today && resCl.ClientId == Logged.CurrentHistory.Id && obj.Id == resCl.ReservationId )
+                {
+                    <tr>
+                        <td width="50%">@obj.RoomId</td>
+                        <td width="50%">@obj.UserId</td>
+                        <td width="50%">@obj.Accommodation</td>
+                        <td width="50%">@obj.Exemption</td>
+                        <td width="50%">@obj.IsBreakfast</td>
+                        <td width="50%">@obj.IsAllInclusive</td>
+                        <td width="50%">@obj.Price лв.</td>
+                        <td class="text-center">
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+<div class="col-6 text-right">
+    <a asp-controller="Clients" asp-action="Index" class="btn btn-danger">
+        Back
+    </a>
+</div>

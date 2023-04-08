@@ -1,9 +1,6 @@
 ﻿
 @model IEnumerable<Hotel_Reservation_Menager.Models.Clients>
 
-@{
-    ViewData["Title"] = "Clients";
-}
 
 <div class="container p-3">
     <div class="row pt-4">
@@ -76,12 +73,15 @@
                         <td width="50%">@obj.IsAdult</td>
                         <td class="text-center">
                             <div class="w-75 btn-group" role="group">
-                                <a asp-controller="Clients" asp-route-Id="@obj.Id" asp-action="EditClient">
+                                <a asp-controller="Clients" class="btn btn-info w-100" asp-route-Id="@obj.Id" asp-action="EditClient">
                                     Edit
-                                </a> |
+                                </a> 
 
-                                <a asp-controller="Clients" asp-route-Id="@obj.Id" asp-action="DeleteClient">
+                                <a asp-controller="Clients" class="btn btn-danger" asp-route-Id="@obj.Id" asp-action="DeleteClient">
                                     Delete
+                                </a> 
+                                <a asp-controller="Clients" class="btn btn-success" asp-route-Id="@obj.Id" asp-action="ClientHistory">
+                                    History
                                 </a>
                             </div>
                         </td>
@@ -111,28 +111,28 @@
     <form asp-controller="Clients" asp-action="Index" method="get">
         <div class="form-group">
             <label for="pageSize">Page Size:</label>
-            @if (ViewBag.PageSize == 3)
+            @if (ViewBag.PageSize == 10)
             {
                 <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
-                    <option selected="selected" value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
-                    <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
-                    <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                    <option selected="selected" value="10" href=@(ViewBag.PageSize == 10 ? "selected" : "" )>10</option>
+                    <option value="25" href=@(ViewBag.PageSize == 25 ? "selected" : "" )>25</option>
+                    <option value="50" href=@(ViewBag.PageSize == 50 ? "selected" : "" )>50</option>
                 </select>
             }
-            else if (ViewBag.PageSize == 6)
+            else if (ViewBag.PageSize == 25)
             {
                 <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
-                    <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
-                    <option selected="selected" value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
-                    <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                    <option value="10" href=@(ViewBag.PageSize == 10 ? "selected" : "" )>10</option>
+                    <option selected="selected" value="25" href=@(ViewBag.PageSize == 25 ? "selected" : "" )>25</option>
+                    <option value="50" href=@(ViewBag.PageSize == 50 ? "selected" : "" )>50</option>
                 </select>
             }
             else
             {
                 <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
-                    <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
-                    <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
-                    <option selected="selected" value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                    <option value="10" href=@(ViewBag.PageSize == 10 ? "selected" : "" )>10</option>
+                    <option value="25" href=@(ViewBag.PageSize == 25 ? "selected" : "" )>25</option>
+                    <option selected="selected" value="50" href=@(ViewBag.PageSize == 50 ? "selected" : "" )>50</option>
                 </select>
             }
         </div>

@@ -308,9 +308,6 @@ C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-
 C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\bin\Debug\net5.0\PagedList.dll
 C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\bin\Debug\net5.0\X.PagedList.dll
 C:\Users\Jacqueline Georgieva\Documents\GitHub\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\bin\Debug\net5.0\X.PagedList.Mvc.dll
-C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Reservations\Delete.cshtml.g.cs
-C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Reservations\Details.cshtml.g.cs
-C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Reservations\Edit.cshtml.g.cs
 C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Reservations\Index.cshtml.g.cs
 C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Rooms\Index.cshtml.g.cs
 C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Clients\Index.cshtml.g.cs
@@ -340,3 +337,5 @@ C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservatio
 C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Rooms\EditRoom.cshtml.g.cs
 C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Reservations\ChooseClients.cshtml.g.cs
 C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Reservations\CreateReservation.cshtml.g.cs
+C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Reservations\EditReservations.cshtml.g.cs
+C:\Users\mgeor\Desktop\Repository It\Hotel-Reservations-Menager\Hotel-Reservation-Menager\Hotel-Reservation-Menager\obj\Debug\net5.0\Razor\Views\Clients\ClientHistory.cshtml.g.cs

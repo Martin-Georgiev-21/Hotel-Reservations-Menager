@@ -18,10 +18,19 @@ namespace Hotel_Reservation_Menager.Controllers
         {
             _db = db;
         }
-        public IActionResult Index(string sortOrder, int clicked = 0, int page = 1, int pageSize = 6)
+        public IActionResult Index(string sortOrder, string searchString, int clicked = 0, int page = 1, int pageSize = 10)
         {
             var users = from s in _db.Users
                         select s;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                users = users.Where(c =>
+                    c.FirstName.Contains(searchString) ||
+                    c.MiddleName.Contains(searchString) ||
+                    c.LastName.Contains(searchString) ||
+                    c.Username.Contains(searchString));
+            }
 
             var totalCount = users.Count();
             var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
@@ -83,6 +92,7 @@ namespace Hotel_Reservation_Menager.Controllers
             ViewBag.Clicked = clicked;
             ViewBag.CurrentClicked = currentclicked;
             ViewBag.SortOrder = sortOrder;
+            ViewData["CurrentFilter"] = searchString;
 
             return View(pageData);
         }
