@@ -87,7 +87,7 @@ namespace Hotel_Reservation_Manager.Controllers
             }
             return RedirectToAction("ChooseClients");
         }
-        public IActionResult ChooseClients(string sortOrder, string searchString, int clicked = 0, int page = 1, int pageSize = 6)
+        public IActionResult ChooseClients(string sortOrder, string searchString, int clicked = 0, int page = 1, int pageSize = 10)
         {
             var clients = _db.Clients.AsQueryable();
 
@@ -323,10 +323,31 @@ namespace Hotel_Reservation_Manager.Controllers
             {
                 if (room.Number == obj.RoomId) chosenRoom = room;
             }
-            if (chosenRoom == null || obj.Accommodation == null || obj.Exemption == null || (DateTime.Parse(obj.Accommodation) > DateTime.Parse(obj.Exemption)) || chosenRoom.IsAvailable == false)
+            if (chosenRoom == null || obj.Accommodation == null || obj.Exemption == null || (DateTime.Parse(obj.Accommodation) > DateTime.Parse(obj.Exemption)))
             {
                 return EditReservations(obj.Id);
             }
+
+                    obj.Price = 0;
+                    foreach (var resCl in _db.ReservationClient)
+                    {
+                        if (obj.Id == resCl.ReservationId)
+                        {
+                            var client = _db.Clients.Find(resCl.ClientId);
+                            if (client.IsAdult == true)
+                            {
+                                obj.Price += Math.Abs(((DateTime.Parse(obj.Exemption) - DateTime.Parse(obj.Accommodation)).Days)) * chosenRoom.PricePerAdult;
+                            }
+                            else 
+                            {
+                                obj.Price += Math.Abs(((DateTime.Parse(obj.Exemption) - DateTime.Parse(obj.Accommodation)).Days)) * chosenRoom.PricePerChild;
+                            }
+                        }
+                    }
+                    if (obj.IsAllInclusive == true && obj.IsBreakfast) obj.Price += obj.Price * 10 / 100;
+                    else if (obj.IsAllInclusive == true) obj.Price += obj.Price * 10 / 100;
+                    else if (obj.IsBreakfast == true) obj.Price += obj.Price * 5 / 100;
+
             _db.Reservations.Update(obj);
             _db.SaveChanges();
             return EditReservations(obj.Id);

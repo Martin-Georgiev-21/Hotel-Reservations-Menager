@@ -15,7 +15,7 @@
 
     <div class="row">
         <div class="col-md-6">
-            <form asp-controller="Reservations" asp-action="Index" method="get">
+            <form asp-controller="Reservations" asp-action="ChooseClients" method="get">
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Search:</label>
                     <div class="col-sm-8">
@@ -25,7 +25,7 @@
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <button type="submit" class="btn btn-primary">Filter</button>
-                        <a asp-controller="Clients" asp-action="Index" class="btn btn-secondary">Clear</a>
+                        <a asp-controller="Reservations" asp-action="ChooseClients" class="btn btn-secondary">Clear</a>
                     </div>
                 </div>
             </form>
@@ -42,10 +42,10 @@
                         ID
                     </th>
                     <th>
-                        @Html.ActionLink("First Name", "Index", new { sortOrder = "FirstName", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
+                        @Html.ActionLink("First Name", "ChooseClients", new { sortOrder = "FirstName", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
                     </th>
                     <th>
-                        @Html.ActionLink("Last Name", "Index", new { sortOrder = "LastName", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
+                        @Html.ActionLink("Last Name", "ChooseClients", new { sortOrder = "LastName", searchString = ViewBag.SearchString, clicked = ViewBag.Clicked, page = ViewBag.Page, pageSize = ViewBag.PageSize })
                     </th>
                     <th>
                         Phone Number
@@ -102,7 +102,7 @@
             {
                 <div style="display:inline-block">
                     <p @(i == ViewBag.Page ? "class=active" : "")>
-                        <a href="/Reservations?sortOrder=@ViewBag.SortOrder&searchString=@ViewBag.SearchString&clicked=@ViewBag.CurrentClicked&page=@i&pageSize=@ViewBag.PageSize">@i</a>
+                        <a href="/Reservations/ChooseClients/@Logged.CurrentReservation.UserId?sortOrder=@ViewBag.SortOrder&searchString=@ViewBag.SearchString&clicked=@ViewBag.CurrentClicked&page=@i&pageSize=@ViewBag.PageSize">@i</a>
                     </p>
                 </div>
             }
@@ -112,28 +112,28 @@
     <form asp-controller="Clients" asp-action="Index" method="get">
         <div class="form-group">
             <label for="pageSize">Page Size:</label>
-            @if (ViewBag.PageSize == 3)
+            @if (ViewBag.PageSize == 10)
             {
                 <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
-                    <option selected="selected" value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
-                    <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
-                    <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                    <option selected="selected" value="10" href=@(ViewBag.PageSize == 10 ? "selected" : "" )>10</option>
+                    <option value="25" href=@(ViewBag.PageSize == 25 ? "selected" : "" )>25</option>
+                    <option value="50" href=@(ViewBag.PageSize == 50 ? "selected" : "" )>50</option>
                 </select>
             }
-            else if (ViewBag.PageSize == 6)
+            else if (ViewBag.PageSize == 25)
             {
                 <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
-                    <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
-                    <option selected="selected" value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
-                    <option value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                    <option value="10" href=@(ViewBag.PageSize == 10 ? "selected" : "" )>10</option>
+                    <option selected="selected" value="25" href=@(ViewBag.PageSize == 25 ? "selected" : "" )>25</option>
+                    <option value="50" href=@(ViewBag.PageSize == 50 ? "selected" : "" )>50</option>
                 </select>
             }
             else
             {
                 <select id="pageSize" name="pageSize" class="form-control" onchange="this.form.submit()">
-                    <option value="3" href=@(ViewBag.PageSize == 3 ? "selected" : "" )>3</option>
-                    <option value="6" href=@(ViewBag.PageSize == 6 ? "selected" : "" )>6</option>
-                    <option selected="selected" value="9" href=@(ViewBag.PageSize == 9 ? "selected" : "" )>9</option>
+                    <option value="10" href=@(ViewBag.PageSize == 10 ? "selected" : "" )>10</option>
+                    <option value="25" href=@(ViewBag.PageSize == 25 ? "selected" : "" )>25</option>
+                    <option selected="selected" value="50" href=@(ViewBag.PageSize == 50 ? "selected" : "" )>50</option>
                 </select>
             }
         </div>
